@@ -38,10 +38,6 @@ class cliprz_database_driver_mysqli
      */
     protected $connection;
 
-    /****************************************/
-    // Driver methods
-    /****************************************/
-
     /**
      * Opens or reuses a connection to a MySQL server and select a MySQL database.
      *
@@ -328,11 +324,7 @@ class cliprz_database_driver_mysqli
             return $escape;
         }
     }
-
-    /****************************************/
-    // Result methods
-    /****************************************/
-
+    
     /**
      * Fetch a result row as an associative array.
      * Returns an associative array that corresponds to the fetched row and moves the internal data pointer ahead.
@@ -431,13 +423,25 @@ class cliprz_database_driver_mysqli
         return mysqli_affected_rows($this->connection); // $link
     }
 
-    /****************************************/
-    // Forge methods
-    /****************************************/
+    /**
+     * Returns the text of the SQL error message.
+     *
+     * @access public.
+     */
+    public function error ()
+    {
+        return mysqli_error($this->connection);
+    }
 
-    /****************************************/
-    // Utility methods
-    /****************************************/
+    /**
+     * Returns the numerical value of the SQL error message.
+     *
+     * @access public.
+     */
+    public function errno ()
+    {
+        return mysqli_errno($this->connection);
+    }
 
 }
 
