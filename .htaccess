@@ -1,0 +1,69 @@
+##
+ # Copyright :
+ #  Cliprz model view controller framework.
+ #  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
+ #
+ # Framework information :
+ #  Version 1.0.0 - Incomplete version for real use 7.
+ #  Official website http://www.cliprz.org .
+ #
+ # File information :
+ #  File path BASE_PATH/ .
+ #  File name .htaccess .
+ #  Created date 09/11/2012 05:32 PM.
+ #  Last modification date 17/01/2013 12:20 AM.
+ #
+ # Description :
+ #  .htaccess
+ #
+ # Licenses :
+ #  This program is released as free software under the Affero GPL license. You can redistribute it and/or
+ #  modify it under the terms of this license which you can read by viewing the included agpl.txt or online
+ #  at www.gnu.org/licenses/agpl.html. Removal of this copyright header is strictly prohibited without
+ #  written permission from the original author(s).
+ ##
+
+<Files ".htaccess">
+order allow,deny
+deny from all
+</Files>
+ 
+ServerSignature Off
+ 
+#Options -MultiViews
+
+#Options +FollowSymLinks
+
+##
+ # Add Indexes
+ ##
+Options All -Indexes
+
+##
+ # Rewrite Engine Module
+ ##
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+#RewriteBase /
+
+RewriteRule ^(.+)$ index.php/$1 [L]
+
+##
+ # Return urls without www to www
+ ##
+#RewriteCond %{http_host} ^YourWebsiteURL.com [nc]
+#RewriteRule ^(.*)$ http://www.YourWebsiteURL.com/$1 [r=301,nc]
+
+##
+ # SSL connection
+ ##
+#RewriteCond %{HTTPS} !on
+#RewriteRule (.*) https://www.%{HTTP_HOST}%{REQUEST_URI}
+
+##
+ # Cookies and sessions path
+ ##
+#php_value session.cookie_domain .YourWebsiteURL.com
