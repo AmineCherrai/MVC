@@ -117,6 +117,17 @@ else
 
     exit(APP_PATH.'config'.DS.'config.php not found.');
 
+// ‪‪add HTML for librareis
+// علي محمد آل براك ‪23/1/2013 9:56 PM
+if (file_exists(SYS_PATH.'html'.DS.'html.php'))
+
+    require_once (SYS_PATH.'html'.DS.'html.php');
+
+else
+
+    exit(SYS_PATH.'html'.DS.'html.php not found.');
+
+
 // Database constants.
 if (is_bool($_config['db']['use_database']) && $_config['db']['use_database'] == true)
 {
