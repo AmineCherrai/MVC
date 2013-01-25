@@ -54,6 +54,19 @@ if (!function_exists('c_image'))
     }
 }
 
+if (!function_exists('c_js'))
+{
+    /**
+     * Get Javascript Files from public/javascript/ path.
+     *
+     * @param (string) $jsname - the javascript file name - you can add a folders inside public/javascript path.
+     */
+    function c_js ($jsname)
+    {
+        echo cliprz::system(view)->javascript($jsname);
+    }
+} 
+
 if (!function_exists('cliprzinfo'))
 {
     /**
