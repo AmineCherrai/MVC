@@ -223,9 +223,19 @@ if (!function_exists('c_short_month'))
      * @param (string) $month - month.
      */
     function c_short_month($month)
-    {
+    {    
+	
+		$monthsArray = array("january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december", );
+		$months = array_map('strtolower', $monthsArray);
+		$month = strtolower($month);
+		if (in_array($month, $months)){
         return ucfirst(c_mb_substr($month,0,3));
+		}else 
+		{
+			return "bad time";
+			}
     }
+
 }
 
 ?>
