@@ -199,4 +199,54 @@ if (!function_exists('c_create_index'))
     }
 }
 
+if (!function_exists('c_move_file'))
+{
+    /**
+     * Move file from current directory to another.
+     *
+     * @param (string) $current_file - current full path file.
+     * @param (string) $move_to - Full path to new directory you want to move file for him.
+     * @param (boolean) $unlink - do you want to delete old $current_file After ending processing, By default true delete the $current_file.
+     */
+    function c_move_file ($current_file,$move_to,$unlink=true)
+    {
+        if (file_exists($current_file))
+        {
+            if (!file_exists($move_to))
+            {
+                if ($unlink == true)
+                {
+                    if (rename($current_file,$move_to))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (copy($current_file,$move_to))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
+
 ?>
