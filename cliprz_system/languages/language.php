@@ -168,7 +168,22 @@ class cliprz_language
     public static function lang ($key)
     {
         global $_lang;
-        return $_lang[$key];
+
+        if (isset($_lang[$key]))
+        {
+            return $_lang[$key];
+        }
+        else
+        {
+            if (C_DEVELOPMENT_ENVIRONMENT)
+            {
+                trigger_error('Undefined ['.$key.'] key in $_lang array.');
+            }
+            else
+            {
+                echo 'Undefined ['.$key.'] key in $_lang array.';
+            }
+        }
     }
 
 }
