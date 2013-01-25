@@ -42,6 +42,7 @@ if (!defined("IN_CLIPRZ")) die('Access Denied');
  *  By default 3306, If you get an error like Can't connect to MySQL server on 'localhost' (10061) repalce value with null.
  * @var (string) $_config['db']['socket'] - Specifies the socket or named pipe that should be used.
  * @var (boolean) $_config['db']['pconnect'] - if you wan't to use mysql and pconnect function, Change the value to true.
+ * @var (boolean) $_config['db']['options'] - if you wan't to some options for database, like PDO PHP Dataa Objects.
  */
 $_config['db']['host']      = "localhost";
 $_config['db']['user']      = "root";
@@ -53,6 +54,7 @@ $_config['db']['collation'] = "utf8_unicode_ci";
 $_config['db']['port']      = null; // By default port is 3306
 $_config['db']['socket']    = null;
 $_config['db']['pconnect']  = false; // use in MySQLi, SQLite Only.
+$_config['db']['options']   = array();
 
 
 /**
