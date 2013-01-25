@@ -176,4 +176,27 @@ if (!function_exists('c_all_files'))
     }
 }
 
+if (!function_exists('c_create_index'))
+{
+    /**
+     * Create index.php file in Chosen path.
+     *
+     * @param (string) $path - Chosen path.
+     */
+    function c_create_index ($path)
+    {
+        if (is_dir($path) && is_writeable($path))
+        {
+            if (!file_exists($path.'index.php'))
+            {
+                c_file_put_contents($path.'index.php',"");
+            }
+        }
+        else
+        {
+            trigger_error("Cannot find ".$path." so we can not create index.php inside chosen path");
+        }
+    }
+}
+
 ?>
