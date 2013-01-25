@@ -169,6 +169,11 @@ require_once FUNCTIONS.'cliprz.functions.php';
  */
 define("C_URL",c_url(),true);
 
+/**
+ * @def (string) C_CHARSET - Get website charset.
+ */
+define("C_CHARSET",c_charset(),true);
+
 // Include Cliprz Flags
 require_once SYS_PATH."flags/flags.php";
 
