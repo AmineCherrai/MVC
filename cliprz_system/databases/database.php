@@ -270,10 +270,6 @@ class cliprz_database
         return self::$_driver->real_escape_string($str);
     }
 
-    /****************************************/
-    // Result methods
-    /****************************************/
-
     /**
      * Fetch a result row as an associative array.
      * Returns an associative array that corresponds to the fetched row and moves the internal data pointer ahead.
@@ -365,13 +361,25 @@ class cliprz_database
         return self::$_driver->affected_rows();
     }
 
-    /****************************************/
-    // Forge methods
-    /****************************************/
+    /**
+     * Returns the text of the SQL error message.
+     *
+     * @access public.
+     */
+    public static function error ()
+    {
+        return self::$_driver->error();
+    }
 
-    /****************************************/
-    // Utility methods
-    /****************************************/
+    /**
+     * Returns the numerical value of the SQL error message.
+     *
+     * @access public.
+     */
+    public static function errno ()
+    {
+        return self::$_driver->errno();
+    }
 
 }
 
