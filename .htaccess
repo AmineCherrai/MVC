@@ -23,13 +23,28 @@
  #  written permission from the original author(s).
  ##
 
+##
+ # deny .htaccess from directly access.
+ ##
 <Files ".htaccess">
 order allow,deny
 deny from all
 </Files>
- 
+
+##
+ # If you get 'No input file specified'. message or you have problems with FastCGI.
+ # Remove (#) from beginning Options +ExecCGI.
+ ##
+#Options +ExecCGI
+
+##
+ # It is very easy for anyone to view your Apache versions and other installed critical software on your server,
+ # and if you don’t upgrade your server software like Apache to the latest versions,
+ # and fail to fix security issues which these upgrades fix, then you don’t want anyone online to be aware about your server details.
+ # Any simple online tool will show HTTP site headers of any site. So we recommend to Disable ServerSignature.
+ ##
 ServerSignature Off
- 
+
 #Options -MultiViews
 
 #Options +FollowSymLinks
@@ -47,9 +62,22 @@ RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
+##
+ # Installation directory.
+ #
 #RewriteBase /
 
-RewriteRule ^(.+)$ index.php/$1 [L]
+##
+ # Allow these directories and files to be displayed directly:
+ ##
+#RewriteRule ^(index\.php|robots\.txt|favicon\.ico|public) - [PT,L]
+
+##
+ # If you have any problems with requesting in your website remove (#) from begining of RewriteRule ^(.+)$ index.php/$1 [L]
+ # and add (#) to RewriteRule .* index.php?/$0 [PT,L,QSA].
+ ##
+#RewriteRule ^(.+)$ index.php/$1 [L]
+RewriteRule .* index.php?/$0 [PT,L,QSA]
 
 ##
  # Return urls without www to www
@@ -58,7 +86,7 @@ RewriteRule ^(.+)$ index.php/$1 [L]
 #RewriteRule ^(.*)$ http://www.YourWebsiteURL.com/$1 [r=301,nc]
 
 ##
- # SSL connection
+ # SSL connection, if you have a SSL SSL connection
  ##
 #RewriteCond %{HTTPS} !on
 #RewriteRule (.*) https://www.%{HTTP_HOST}%{REQUEST_URI}
