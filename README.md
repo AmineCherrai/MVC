@@ -12,6 +12,16 @@ This framework help you to create a PHP project without writing big codes, It's 
 What distinguishes Cliprz framework You can routing URLs without using controller/functions/parameters,
 You can use multi database drivers, That's not all there is more, Let's start and learn Cliprz framework by visiting Manual.
 
+Copyright
+=========
+Cliprz model view controller framework.
+Copyright (C) 2012 - 2013 By Yousef Ismaeil.
+http://www.cliprz.org
+
+Developers
+==========
+
+Amer Alrdadi, abdualrhman1410, Bil ElMoussaoui, Bo.SaQeR, hussam.alzahabi, m.elfergany, Mahdix18, mohammednasser, progboy, Sec.php, turkialawlqy, usf, علي آل براك
 
 License
 =======
