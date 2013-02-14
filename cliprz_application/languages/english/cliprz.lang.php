@@ -6,17 +6,17 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.0.0 - Incomplete version for real use 7.
+ *  Version 1.1.0 - Stability Beta.
  *  Official website http://www.cliprz.org .
  *
  * File information :
- *  File path BASE_PATH/cliprz_application/languages/ .
+ *  File path BASE_PATH/cliprz_application/languages/english/ .
  *  File name cliprz.lang.php .
  *  Created date 20/01/2013 01:32 AM.
- *  Last modification date 20/01/2013 02:43 AM.
+ *  Last modification date 12/02/2013 10:21 AM.
  *
  * Description :
- *  Cliprz framework languages array.
+ *  Cliprz framework english languages array.
  *
  * Licenses :
  *  This program is released as free software under the Affero GPL license. You can redistribute it and/or
@@ -78,6 +78,43 @@ $_lang['c_sep'] = "Sep";
 $_lang['c_oct'] = "Oct";
 $_lang['c_nov'] = "Nov";
 $_lang['c_dec'] = "Dec";
+
+$_lang['c_ago']            = "ago";
+$_lang['c_from_now']       = "From Now";
+$_lang['c_not_valid_date'] = "No Date Provided";
+$_lang['c_bad_date']       = "Bad Date";
+$_lang['c_not_a_month']    = "Not a month";
+$_lang['c_s']              = "s";
+
+$_lang['c_second'] = "Second";
+$_lang['c_minute'] = "Minute";
+$_lang['c_hour']   = "Hour";
+$_lang['c_day']    = "Day";
+$_lang['c_week']   = "Week";
+$_lang['c_month']  = "Month";
+$_lang['c_year']   = "Year";
+$_lang['c_decade'] = "Decade";
+
+// Upload file library
+$_lang['c_uf_choose_a_file']           = "Please choose a file.";
+$_lang['c_uf_filename_rules']          = "Filename must be in English letters, numbers, Symbols that in parentheses (- _ .) and without spacing.";
+$_lang['c_uf_maximum_file_size']       = "Maximum file size is : ";
+$_lang['c_uf_type_not_allowed']        = "File type is not allowed.";
+$_lang['c_uf_uploaded_successfully']   = "File was uploaded successfully.";
+$_lang['c_uf_file_is_already_exists']  = "We are sorry this file is already exists. You can rename your file and upload again.";
+$_lang['c_uf_long_file_name']          = "File name must be less than 220 character.";
+$_lang['c_uf_failed_to_upload']        = "Failed to upload file.";
+$_lang['c_uf_our_server_del_the_file'] = "Our server delete the file for security reasons.";
+$_lang['c_uf_in_field_number']         = "In field number";
+
+// pagination library
+$_lang['c_pg_first']    = "&laquo; First";
+$_lang['c_pg_previous'] = "&laquo; Previous";
+$_lang['c_pg_adjacent'] = "&hellip;";
+$_lang['c_pg_adjacent'] = "&hellip;";
+$_lang['c_pg_next']     = "Next &raquo;";
+$_lang['c_pg_last']     = "Last &raquo;";
+
 
 // recaptcha
 /* Removed By Albert (Negix)

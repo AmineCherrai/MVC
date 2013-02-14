@@ -6,14 +6,14 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.0.0 - Incomplete version for real use 7.
+ *  Version 1.1.0 - Stability Beta.
  *  Official website http://www.cliprz.org .
  *
  * File information :
  *  File path BASE_PATH/cliprz_system/functions/ .
  *  File name magic_quotes.functions.php .
  *  Created date 22/01/2013 06:28 PM.
- *  Last modification date 22/01/2013 06:45 PM.
+ *  Last modification date 25/01/2013 10:18 AM.
  *
  * Description :
  *  Magic quotes functions.
@@ -26,13 +26,6 @@
  */
 
 if (!defined("IN_CLIPRZ")) die('Access Denied');
-
-/**
- * Magic quotes
- */
-#ini_set("magic_quotes_gpc","Off");
-#ini_set("magic_quotes_runtime","Off");
-#ini_set("magic_quotes_sybase","Off");
 
 if (!function_exists('c_get_magic_quotes'))
 {

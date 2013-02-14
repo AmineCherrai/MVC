@@ -6,14 +6,14 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.0.0 - Incomplete version for real use 7.
+ *  Version 1.1.0 - Stability Beta.
  *  Official website http://www.cliprz.org .
  *
  * File information :
  *  File path BASE_PATH/cliprz_system/functions/ .
  *  File name filesystem.functions.php .
  *  Created date 17/10/2012 01:56 AM.
- *  Last modification date 21/01/2013 08:02 AM.
+ *  Last modification date 14/02/2013 04:07 PM.
  *
  * Description :
  *  Cliprz Filesystem Functions.
@@ -40,17 +40,22 @@ if (!function_exists('c_ini_data'))
      */
     function c_ini_data($filename,$process_sections=false)
     {
-
-        if (file_exists($filename))
+        try
         {
-            $output = parse_ini_file($filename,$process_sections);
-            return (array) $output;
+            if (file_exists($filename))
+            {
+                $output = parse_ini_file($filename,$process_sections);
+                return (array) $output;
+            }
+            else
+            {
+                throw new Exception (__FUNCTION__.'() function error : '.$filename.' configuration file not found.');
+            }
         }
-        else
+        catch (Exception $e)
         {
-            trigger_error("c_ini_data function error : ".$filename.' configuration file not found.');
+            c_log_error($e);
         }
-
     }
 }
 
@@ -63,24 +68,21 @@ if (!function_exists('c_file_get_contents'))
      */
     function c_file_get_contents ($filename)
     {
-        if (file_exists($filename))
+        try
         {
-            if (function_exists('file_get_contents'))
+            if (file_exists($filename))
             {
                 $contents = file_get_contents($filename);
                 return $contents;
             }
             else
             {
-                $handle =  fopen($filename,'r');
-                $contents = fread($handle,filesize($filename));
-                fclose($handle);
-                return $contents;
+                throw new Exception (__FUNCTION__.'() function error : '.$filename.' not exists.');
             }
         }
-        else
+        catch (Exception $e)
         {
-            trigger_error("c_file_get_contents function error : ".$filename." not exists.");
+            c_log_error($e);
         }
     }
 }
@@ -97,20 +99,13 @@ if (!function_exists('c_file_put_contents'))
      */
     function c_file_put_contents ($filename,$data,$flags=null)
     {
-        if (function_exists('file_put_contents'))
+        if ($flags == null)
         {
-            if ($flags == null)
-            {
-                file_put_contents($filename,$data);
-            }
-            else
-            {
-                file_put_contents($filename,$data,$flags);
-            }
+            file_put_contents($filename,$data);
         }
         else
         {
-            trigger_error("Your PHP version dose not support file_put_contents() function.");
+            file_put_contents($filename,$data,$flags);
         }
     }
 }
@@ -185,16 +180,23 @@ if (!function_exists('c_create_index'))
      */
     function c_create_index ($path)
     {
-        if (is_dir($path) && is_writeable($path))
+        try
         {
-            if (!file_exists($path.'index.php'))
+            if (is_dir($path) && is_writeable($path))
             {
-                c_file_put_contents($path.'index.php',"");
+                if (!file_exists($path.'index.php'))
+                {
+                    c_file_put_contents($path.'index.php',"");
+                }
+            }
+            else
+            {
+                throw new Exception ('Cannot find '.$path.' so we can not create index.php inside chosen path');
             }
         }
-        else
+        catch (Exception $e)
         {
-            trigger_error("Cannot find ".$path." so we can not create index.php inside chosen path");
+            c_log_error($e);
         }
     }
 }
@@ -246,6 +248,95 @@ if (!function_exists('c_move_file'))
         {
             return false;
         }
+    }
+}
+
+if (!function_exists('c_str2bytes'))
+{
+    /**
+     * Convert measurement unit to bytes.
+     *
+     * @param (integer) $val - file size.
+     */
+    function c_str2bytes($value)
+    {
+        $value = trim($value);
+        $last  = strtolower($val[strlen($val)-1]);
+
+        switch($last)
+        {
+            // The 'G' modifier is available since PHP 5.1.0
+            case 'g':
+            $value *= 1024;
+            case 'm':
+            $value *= 1024;
+            case 'k':
+            $value *= 1024;
+        }
+
+        return $value;
+    }
+}
+
+if (!function_exists('c_bytes2str'))
+{
+    /**
+     * Convert bytes to measurement unit.
+     *
+     * @param (integer) $val - size.
+     * @param (boolean) $round.
+     */
+    function c_bytes2str($size, $round = 0)
+    {
+        $unit = array('','K','M','G','T','P','E','Z','Y');
+
+        while($size >= 1000)
+        {
+            $size /= 1024;
+            array_shift($unit);
+        }
+
+        return round($size, $round) . array_shift($unit) . 'B';
+    }
+}
+
+if (!function_exists('c_delete_file'))
+{
+    /**
+     * Deletes a file with checking.
+     *
+     * @param (string) $filename - Path to the file.
+     */
+    function c_delete_file ($filename)
+    {
+        if (file_exists($filename))
+        {
+            if (unlink($filename))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
+
+if (!function_exists('c_is_rw'))
+{
+    /**
+     * Check folder is writeable and readable.
+     *
+     * @param (string) $folder - Folder name.
+     */
+    function c_is_rw ($folder)
+    {
+        return (bool) ((is_readable($folder) && is_writeable($folder)) ? true : false);
     }
 }
 

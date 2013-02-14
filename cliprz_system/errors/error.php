@@ -6,14 +6,14 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.0.0 - Incomplete version for real use 7.
+ *  Version 1.1.0 - Stability Beta.
  *  Official website http://www.cliprz.org .
  *
  * File information :
  *  File path BASE_PATH/cliprz_system/errors/ .
  *  File name error.php .
  *  Created date 14/11/2012 07:54 PM.
- *  Last modification date 19/01/2013 05:00 PM.
+ *  Last modification date 01/02/2013 03:41 AM.
  *
  * Description :
  *  Errors class.
@@ -29,6 +29,17 @@ if (!defined("IN_CLIPRZ")) die('Access Denied');
 
 class cliprz_error
 {
+
+    /**
+     * Get error css style file from public.
+     *
+     * @param (string) $filename - file name.
+     * @access public.
+     */
+    public static function errors_style ($filename)
+    {
+        return c_url('public'.DS.'css'.DS.'errors'.DS.$filename);
+    }
 
     /**
      * Show 404 Not Found error.
@@ -65,7 +76,7 @@ class cliprz_error
         else
         {
             echo "<h1>400</h1>";
-            exit();
+            //exit();
         }
 
     }

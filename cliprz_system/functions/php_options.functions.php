@@ -6,14 +6,14 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.0.0 - Incomplete version for real use 7.
+ *  Version 1.1.0 - Stability Beta.
  *  Official website http://www.cliprz.org .
  *
  * File information :
  *  File path BASE_PATH/cliprz_system/functions/ .
  *  File name php_options.functions.php .
  *  Created date 13/12/2012 06:59 PM.
- *  Last modification date 21/01/2013 04:57 PM.
+ *  Last modification 28/01/2013 02:53 PM.
  *
  * Description :
  *  PHP Options/Info functions.
@@ -74,6 +74,32 @@ if (!function_exists('c_is_extension_loaded'))
     function c_is_extension_loaded ($extension)
     {
         return (bool) ((extension_loaded($extension)) ? 1 : 0);
+    }
+}
+
+if (!function_exists('c_get_temp_dir'))
+{
+    /**
+     * Get directory path used for temporary files.
+     */
+    function c_get_temp_dir()
+    {
+        if (!empty($_ENV['TEMP']))
+        {
+            return realpath( $_ENV['TEMP']);
+        }
+        else if (!empty($_ENV['TMP']))
+        {
+            return realpath($_ENV['TMP']);
+        }
+        else if (!empty($_ENV['TMPDIR']))
+        {
+            return realpath( $_ENV['TMPDIR']);
+        }
+        else
+        {
+            return null;
+        }
     }
 }
 

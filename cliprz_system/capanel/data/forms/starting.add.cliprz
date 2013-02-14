@@ -1,0 +1,20 @@
+<?php if (!defined("IN_CLIPRZ")) die('Access Denied'); ?>
+
+<?php
+
+if (isset($errors) && $errors !== false)
+{
+?>
+    <div class="error"><?php echo $errors; ?></div>
+<?php
+}
+?>
+
+<form id="{tablename}" action="<?php echo cliprz::system(cap)->url("{tablename}/add/check"); ?>" method="POST">
+<table>
+<thead>
+    <tr>
+        <td colspan="2">Add new data to {tablename} table.</td>
+    </tr>
+</thead>
+<tbody>

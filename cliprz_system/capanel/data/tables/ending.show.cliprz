@@ -1,0 +1,19 @@
+<?php
+} // end while loop
+cliprz::system(database)->free_result($query);
+}
+else
+{
+?>
+<tr class="tbl2">
+    <td colspan="{colspan}">No data ..</td>
+</tr>
+<?php
+}
+?>
+</tbody>
+</table>
+<br />
+<div class="text-center">
+<?php echo $pagination; ?>
+</div>

@@ -1,0 +1,65 @@
+    /**
+     * Update {tablename}.
+     *
+     * @access public.
+     */
+    public function update ()
+    {
+        // Hide display pages.
+        $hide   = false;
+        // Set your errors.
+        $errors = false;
+
+        // Get query
+        $query = cliprz::system(database)->select("{tablename}");
+
+        if (isset($_POST['update']) && $_POST['update'] == '{tablename}')
+        {
+
+            $update_posts = $this->{tablename}_posts();
+
+            // Note check your posts before updateing.
+
+            // Update data to database
+            cliprz::system(database)->update("{tablename}",$update_posts);
+
+            // Now if update data is done hide display pages.
+            $hide = true;
+
+            // If not errors return errors to false.
+            $errors = false;
+
+            // Unset Posts.
+            unset($update_posts);
+
+            // If update is done display a success message.
+            cliprz::system(cap)->success(array(
+                'title'   => 'Redirecting', // Redirecting title.
+                'message' => 'Data was updated successfully.', // Redirecting message
+                'page'    => '{tablename}/update', // Redirecting URL page
+                'time'    => 3 // Redirecting refresh time, 3 Minutes by default.
+            ));
+        }
+
+        // Get data from database to display in update form
+        $row = cliprz::system(database)->fetch_assoc($query);
+
+        $data = array(
+            'errors' => $errors,
+            'row'    => $row
+        );
+
+        // If hide value is false and boolean try to hide display pages.
+        if ($hide === false)
+        {
+            // Set a {tablename} document title.
+            cliprz::system(cap)->set_title("Update {tablename}");
+            // Show header page.
+            cliprz::system(cap)->display('header','capanel');
+            // Show add form.
+            cliprz::system(cap)->display('update','{tablename}',$data);
+            // Show footer.
+            cliprz::system(cap)->display('footer','capanel');
+        }
+    }
+

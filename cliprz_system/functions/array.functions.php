@@ -6,14 +6,14 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.0.0 - Incomplete version for real use 7.
+ *  Version 1.1.0 - Stability Beta.
  *  Official website http://www.cliprz.org .
  *
  * File information :
  *  File path BASE_PATH/cliprz_system/functions/ .
  *  File name array.functions.php .
  *  Created date 19/10/2012 11:00 PM.
- *  Last modification date 19/10/2012 11:00 PM.
+ *  Last modification date 10/02/2013 11:09 AM.
  *
  * Description :
  *  array functions.
@@ -36,15 +36,59 @@ if (!function_exists('c_print_r'))
      */
     function c_print_r($array)
     {
-        if (is_array($array))
+        try
         {
-            echo '<pre>';
-            print_r($array);
-            echo '</pre>';
+            if (is_array($array))
+            {
+                echo '<pre>';
+                print_r($array);
+                echo '</pre>';
+            }
+            else
+            {
+                throw new Exception(__FUNCTION__.'(); $array parameter must be a array.');
+            }
         }
-        else
+        catch (Exception $e)
         {
-            echo $array.' Not array';
+            c_log_error($e,'ERROR');
+        }
+    }
+}
+
+if (!function_exists('c_is_array_empty'))
+{
+    /**
+     * Check if array is empty or not.
+     *
+     * @param (array) $array - Array.
+     */
+    function c_is_array_empty ($array)
+    {
+        try
+        {
+            if (is_array($array))
+            {
+                foreach ($array as $key => $value)
+                {
+                    if (empty($value) || is_null($value))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                throw new Exception(__FUNCTION__.'(); $array parameter must be a array.');
+            }
+        }
+        catch (Exception $e)
+        {
+            c_log_error($e,'ERROR');
         }
     }
 }

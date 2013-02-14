@@ -6,14 +6,14 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.0.0 - Incomplete version for real use 7.
+ *  Version 1.1.0 - Stability Beta.
  *  Official website http://www.cliprz.org .
  *
  * File information :
  *  File path BASE_PATH/cliprz_system/functions/ .
  *  File name multibyte_string.functions.php .
  *  Created date 18/11/2012 08:19 AM.
- *  Last modification date 16/01/2013 11:32 PM.
+ *  Last modification date 03/02/2013 03:39 PM.
  *
  * Description :
  *  Multibyte String functions.
@@ -53,6 +53,56 @@ if (!function_exists('c_mb_substr'))
     function c_mb_substr($str,$start=0,$length=100)
     {
         return mb_substr($str,$start,$length);
+    }
+}
+
+if (!function_exists('c_mb_strtolower'))
+{
+    /**
+     * Make a string or array lowercase.
+     *
+     * @param (mixed) $str - The input.
+     */
+    function c_mb_strtolower($str)
+    {
+        if (is_array($str))
+        {
+            foreach ($str as $key => $val)
+            {
+                $str[$key] = c_mb_strtolower($val);
+            }
+        }
+        else
+        {
+            $str = mb_strtolower($str);
+        }
+
+        return $str;
+    }
+}
+
+if (!function_exists('c_mb_strtoupper'))
+{
+    /**
+     * Make a string or array uppercase.
+     *
+     * @param (mixed) $str - The input.
+     */
+    function c_mb_strtoupper($str)
+    {
+        if (is_array($str))
+        {
+            foreach ($str as $key => $val)
+            {
+                $str[$key] = c_mb_strtoupper($val);
+            }
+        }
+        else
+        {
+            $str = mb_strtoupper($str);
+        }
+
+        return $str;
     }
 }
 

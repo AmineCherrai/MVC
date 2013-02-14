@@ -1,0 +1,30 @@
+flood handler README
+====================
+
+Flooding handler with database
+
+You must enabled database from config.
+
+$_config['db']['use_database'] = true;
+$_config['db']['driver']       = "mysqli";
+
+===================================================================
+Add flood_handler folder to BASE_PATH/cliprz_system/libraries/
+===================================================================
+
+========================================================
+Add in BASE_PATH/cliprz_application/config/libraries.php
+========================================================
+cliprz::library_use("flood_handler","flood_handler"); 
+
+=============
+How to use it
+=============
+if (cliprz::library("flood_handler")->initializing(c_get_ip(),"default",60,600))
+{
+	echo "You are flooding.";
+}
+else
+{
+	echo "Complete ...";
+}

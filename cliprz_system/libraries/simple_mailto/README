@@ -1,0 +1,25 @@
+simple mailto README
+====================
+
+Send a simple mail.
+
+===================================================================
+Add simple_mailto folder to BASE_PATH/cliprz_system/libraries/
+===================================================================
+
+========================================================
+Add in BASE_PATH/cliprz_application/config/libraries.php
+========================================================
+cliprz::library_use("simple_mailto","simple_mailto"); 
+
+=============
+How to use it
+=============
+cliprz::library("simple_mailto")->send(array(
+	"from_email" => "noreply@YourWebsiteURL.com",
+	"from_name"  => "Website Help Center",
+	"to_email"   => "to@emailsite.com",
+	"to_name"    => "User name",
+	"subject"    => "Here message subject",
+	"message"    => "Message content"
+));

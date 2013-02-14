@@ -1,0 +1,5 @@
+<tr class="tbl2">
+    <td><?php echo c_stripslashes(c_htmlentities($row['{primarykey}'])) ;?></td>
+    <td><?php echo c_stripslashes(c_htmlentities($row['{startingrow}'])) ;?></td>
+    <td>{editlink}{deletelink}</td>
+</tr>

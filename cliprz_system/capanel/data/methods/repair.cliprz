@@ -1,0 +1,16 @@
+    /**
+     * Repair {tablename} table.
+     *
+     * @access public.
+     */
+    public function repair ()
+    {
+        cliprz::system(database)->repair_table("{tablename}");
+        cliprz::system(cap)->success(array(
+            'title'   => 'Redirecting', // Redirecting title.
+            'message' => '{tablename} table has been repaired', // Redirecting message
+            'page'    => '{tablename}/show', // Redirecting URL page
+            'time'    => 3 // Redirecting refresh time, 3 Minutes by default.
+        ));
+    }
+

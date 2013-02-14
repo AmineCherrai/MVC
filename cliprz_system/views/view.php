@@ -6,14 +6,14 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.0.0 - Incomplete version for real use 7.
+ *  Version 1.1.0 - Stability Beta.
  *  Official website http://www.cliprz.org .
  *
  * File information :
  *  File path BASE_PATH/cliprz_system/views/ .
  *  File name view.php .
  *  Created date 17/10/2012 04:15 AM.
- *  Last modification date 01/01/2013 10:47 AM.
+ *  Last modification date 27/01/2013 09:50 PM.
  *
  * Description :
  *  View class.
@@ -35,12 +35,6 @@ class cliprz_view
      * @access protected.
      */
     protected static $ext = '.page.php';
-
-    /**
-     * @var (string) $public - public folder name in www/project/.
-     * @access protected.
-     */
-    protected static $public = "public";
 
     /**
      * display file from project views folder.
@@ -93,45 +87,17 @@ class cliprz_view
     }
 
     /**
-     * load javascript (js) files from public folder.
+     * load images from public/images folder.
      *
      * @param (string) $file - file name.
-     * @param (string) $folder- folder name inside public folder.
      * @access public.
-     * @return string (http(s)://www.example.example/public/javascript/$folder/$file).
+     * @return string (http(s)://www.example.example/public/images/$imagename).
      */
-    public static function javascript ($file,$folder='')
+    public static function image ($imagename)
     {
-        global $_config;
-
-        // Path example = http://example.example/public/javascript/$folder/$file
-        $path = c_trim_path($_config['output']['url']);
-        $path .= DS.self::$public.DS."javascript".DS;
-        $path .= (isset($folder) && !empty($folder)) ? c_trim_path($folder).DS : "";
-        $path .= $file;
-
-        return $path;
-    }
-
-    /**
-     * load images files from public folder.
-     *
-     * @param (string) $file - file name.
-     * @param (string) $folder- folder name inside public folder.
-     * @access public.
-     * @return string (http(s)://www.example.example/public/images/$folder/$file).
-     */
-    public static function image ($file,$folder='')
-    {
-        global $_config;
-
-        // Path example = http://example.example/public/css/$folder/$file
-        $path = c_trim_path($_config['output']['url']);
-        $path .= DS.self::$public.DS."images".DS;
-        $path .= (isset($folder) && !empty($folder)) ? c_trim_path($folder).DS : "";
-        $path .= $file;
-
-        return $path;
+        return ((file_exists(PUBLIC_PATH.'images'.DS.$imagename))
+            ? C_URL.'public'.DS.'images'.DS.$imagename
+            : trigger_error($imagename." File dons not exists in ".PUBLIC_PATH.'images'.DS));
     }
 
 }

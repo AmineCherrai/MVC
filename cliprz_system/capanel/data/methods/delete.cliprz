@@ -1,0 +1,37 @@
+    /**
+     * Delete data from {tablename}.
+     *
+     * @access public.
+     */
+    public function delete (${primarykey})
+    {
+        if (isset(${primarykey}))
+        {
+            // Check if data exists in database.
+            $query = cliprz::system(database)->select("{tablename}","`{primarykey}`","`{primarykey}`='".${primarykey}."'","","0,1");
+
+            // if data exists try to delete data.
+            if (cliprz::system(database)->num_rows($query))
+            {
+                // Delete from database
+                cliprz::system(database)->delete("{tablename}","`{primarykey}`='".${primarykey}."'");
+
+                // If delete is done display a success message.
+                cliprz::system(cap)->success(array(
+                    'title'   => 'Redirecting', // Redirecting title.
+                    'message' => 'Data was inserted successfully.', // Redirecting message
+                    'page'    => '{tablename}/show', // Redirecting URL page
+                    'time'    => 3 // Redirecting refresh time, 3 Minutes by default.
+                ));
+            }
+            else // If no data exists show 404 page.
+            {
+                cliprz::system(error)->show_404();
+            }
+        }
+        else // If not isset ${primarykey} show 404 page.
+        {
+            cliprz::system(error)->show_404();
+        }
+    }
+
