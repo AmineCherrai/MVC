@@ -114,6 +114,11 @@ $_lang['c_pg_adjacent'] = "&hellip;";
 $_lang['c_pg_next']     = "التالي &raquo;";
 $_lang['c_pg_last']     = "الاخيرة &raquo;";
 
+//file exsist function
+$_lang['c_file_exist']     = "الملف المطلوب موجود";
+$_lang['c_file_not_exist']     = "الملف المطلوب غير موجود";
+
+
 // recaptcha
 /*Removed By Albert (Negix)
 $_lang['c_recaptcha'] = array(
