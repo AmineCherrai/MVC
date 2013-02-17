@@ -134,11 +134,12 @@ class library_pagination
         {
             self::$current = 1;
         }
-
+        /* Removed by Yousef Ismaeil Cliprz. For now only we will fix that in 1.1.1 version
         if (self::$current > ceil(self::$total_pages/self::$limit))
         {
             c_redirecting(c_url(self::$page.DS.'page'.DS.'1'));
         }
+        */
     }
 
     /**
