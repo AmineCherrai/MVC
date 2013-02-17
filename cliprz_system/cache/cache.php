@@ -6,7 +6,7 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.1.0 - Stability Beta.
+ *  Version 1.1.0 - Stability Stable.
  *  Official website http://www.cliprz.org .
  *
  * File information :
@@ -30,7 +30,7 @@ if (!defined("IN_CLIPRZ")) die('Access Denied');
 class cliprz_cache
 {
 
-    // Return null, working in 1.0.2 version.
+    // Next to do.
 
 }
 

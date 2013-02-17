@@ -6,14 +6,14 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.1.0 - Stability Beta.
+ *  Version 1.1.0 - Stability Stable.
  *  Official website http://www.cliprz.org .
  *
  * File information :
  *  File path BASE_PATH/cliprz_system/databases/drivers/mysqli/ .
  *  File name mysqli_session_handler.php .
  *  Created date 27/01/2013 08:52 PM.
- *  Last modification 30/01/2013 11:58 PM.
+ *  Last modification 16/02/2013 04:07 PM.
  *
  * Description :
  *  MySQLi session handler database class.
@@ -49,9 +49,6 @@ class cliprz_mysqli_session_handler
      */
     public function __construct()
     {
-
-        global $_config;
-
         $this->create_session_table();
 
         $this->sessionLifetime = ini_get("session.gc_maxlifetime");
@@ -67,15 +64,17 @@ class cliprz_mysqli_session_handler
         register_shutdown_function('session_write_close');
 
 
-        $cookie_domain = (is_null($_config['session']['cookie_domain'])) ? "" : $_config['session']['cookie_domain'];
+        $cookie_domain = (is_null(cliprz::system(config)->get('session','cookie_domain')))
+            ? ""
+            : cliprz::system(config)->get('session','cookie_domain');
 
 
         session_set_cookie_params(
-            $_config['session']['cookie_lifetime'],
-            $_config['session']['cookie_path'],
+            cliprz::system(config)->get('session','cookie_lifetime'),
+            cliprz::system(config)->get('session','cookie_path'),
             $cookie_domain,
-            $_config['session']['cookie_secure'],
-            $_config['session']['cookie_httponly']);
+            cliprz::system(config)->get('session','cookie_secure'),
+            cliprz::system(config)->get('session','cookie_httponly'));
 
         unset($cookie_domain);
 
@@ -117,10 +116,12 @@ class cliprz_mysqli_session_handler
      */
     public function open_session($save_path,$session_name)
     {
-        global $_config;
-        $this->connection = @mysqli_connect($_config['db']['host'],$_config['db']['user'],$_config['db']['pass']) or die ('session handler restart');
-        mysqli_select_db($this->connection,$_config['db']['name']);
-        mysqli_set_charset($this->connection,$_config['db']['charset']);
+        $this->connection = @mysqli_connect(
+            cliprz::system(config)->get('db','host'),
+            cliprz::system(config)->get('db','user'),
+            cliprz::system(config)->get('db','pass')) or die ('session handler restart');
+        mysqli_select_db($this->connection,cliprz::system(config)->get('db','name'));
+        mysqli_set_charset($this->connection,cliprz::system(config)->get('db','charset'));
         return true;
     }
 

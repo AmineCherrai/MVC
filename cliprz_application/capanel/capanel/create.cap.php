@@ -1,3 +1,5 @@
+<?php if (!defined("IN_CLIPRZ")) die('Access Denied'); ?>
+
 <style type="text/css">
 .capanel_field_width { width: 50%; }
 .capanel_opacity { display: none; width: 100%; height: 100%; position: absolute; z-index: 99; background-color: #FFF; top: 0; left: 0; }

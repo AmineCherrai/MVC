@@ -6,14 +6,14 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.1.0 - Stability Beta.
+ *  Version 1.1.0 - Stability Stable.
  *  Official website http://www.cliprz.org .
  *
  * File information :
  *  File path BASE_PATH/cliprz_system/router/ .
  *  File name router.php .
  *  Created date 17/10/2012 05:06 AM.
- *  Last modification date 19/01/2013 01:47 PM.
+ *  Last modification date 17/02/2013 06:08 PM.
  *
  * Description :
  *  Router class.
@@ -87,12 +87,13 @@ class cliprz_router
      *
      * @param (array) $_action.
      *  $_action :
-     *   'regex'      - Add url mask you want to use.
-     *   'class'      - Add controller class.
-     *   'function'   - Add controller class method (function), By default take self::$default_function value.
-     *   'parameters' - Add parameters to controller class method (function).
-     *   'path'       - If controller class in subfolder inside controllers folder, put the path name here.
-     *   'method'     - Request method to access routing, By default GET u can use (PUT|HEAD|POST|GET).
+     *   'regex'       - Add url mask you want to use.
+     *   'class'       - Add controller class.
+     *   'function'    - Add controller class method (function), By default take self::$default_function value.
+     *   'parameters'  - Add parameters to controller class method (function).
+     *   'path'        - If controller class in subfolder inside controllers folder, put the path name here.
+     *   'redirecting' - Add Redirecting page of your choice if Regular expressions matched.
+     *   'method'      - Request method to access routing, By default GET u can use (PUT|HEAD|POST|GET).
      * @access public.
      */
     public static function rule ($_action)
@@ -100,27 +101,37 @@ class cliprz_router
         if (is_array($_action))
         {
             self::$_rule[] = array(
-                "regex"      => (isset($_action['regex']))
+                // Regular expressions
+                "regex"       => (isset($_action['regex']))
                     ? (string) $_action['regex']
-                    : null,
-
-                "class"      => (isset($_action['class']))
+                    : NULL,
+                // Class name
+                "class"       => (isset($_action['class']))
                     ? (string) $_action['class']
-                    : null,
+                    : NULL,
 
-                "function"   => (isset($_action['function']))
+                // Metohd (function) name.
+                "function"    => (isset($_action['function']))
                     ? (string) $_action['function']
                     : (string) self::$default_function,
 
-                "parameters" => (isset($_action['parameters']))
+                // parameters as array.
+                "parameters"  => (isset($_action['parameters']))
                     ? (array) $_action['parameters']
-                    : null,
+                    : NULL,
 
-                "path"       => (isset($_action['path']))
+                // Set class sub folder name in controller folder.
+                "path"        => (isset($_action['path']))
                     ? c_trim_path($_action['path']).'/'
                     : "",
 
-                "method"     => (isset($_action['method']))
+                // Redirecting to page of your choice if Regular expressions matched.
+                "redirecting" => (isset($_action['redirecting']))
+                    ? c_trim_path($_action['redirecting'])
+                    : NULL,
+
+                // Request method type.
+                "method"      => (isset($_action['method']))
                     ? strtoupper($_action['method'])
                     : "GET"
             );
@@ -147,43 +158,63 @@ class cliprz_router
 
             foreach (self::$_rule as $rule)
             {
+                // Convert resource to regular expressions.
                 $regex = self::resource_to_regex($rule['regex']);
 
+                // Check regex if match resource.
                 if (preg_match($regex,self::$_requested['resource']))
                 {
-
+                    // Check request method.
                     if ($rule['method'] == self::$_requested['method'])
                     {
-
-                        // check class
-                        $class      = $rule['class'];
-                        $class_path = APP_PATH.'controllers'.DS.$rule['path'].$class.'.php';
-
-                        if (file_exists($class_path))
+                        // Check if redirecting is isset and not null go to redirecting page.
+                        if (isset($rule['redirecting']) && !is_null($rule['redirecting']))
                         {
-                            require_once $class_path;
+                            c_redirecting(c_url($rule['redirecting']));
+                        }
+                        else // else if no redirecting page.
+                        {
+                            // Set class name.
+                            $class      = $rule['class'];
+                            // Set class path
+                            $class_path = APP_PATH.'controllers'.DS.$rule['path'].$class.'.php';
 
-                            // check if class exists
-                            if (class_exists($class))
+                            // Check if class file is exists.
+                            if (file_exists($class_path))
                             {
-                                $object = new $class();
+                                // Call class.
+                                require_once $class_path;
 
-                                // check object functions (methods).
-                                $function   = $rule['function'];
-                                $parameters = $rule['parameters'];
-
-                                if (method_exists($class,$function))
+                                // check if class exists
+                                if (class_exists($class))
                                 {
+                                    // Create a new object.
+                                    $object = new $class();
 
-                                    if (!is_null($parameters) && is_array($parameters))
+                                    // check object functions (methods).
+                                    $function   = $rule['function'];
+                                    $parameters = $rule['parameters'];
+
+                                    // Check if method exists.
+                                    if (method_exists($class,$function))
                                     {
-                                        call_user_func_array(
-                                            array($object,$function),
-                                            self::get_parameters($parameters));
+                                        // Check if parameters is array.
+                                        if (!is_null($parameters) && is_array($parameters))
+                                        {
+                                            // Call object and method and set parameters for method.
+                                            call_user_func_array(
+                                                array($object,$function),
+                                                self::get_parameters($parameters));
+                                        }
+                                        else // Else if parameters is not array
+                                        {
+                                            $object->$function();
+                                        }
+
                                     }
                                     else
                                     {
-                                        $object->$function();
+                                        cliprz::system(error)->show_404();
                                     }
 
                                 }
@@ -199,11 +230,6 @@ class cliprz_router
                             }
 
                         }
-                        else
-                        {
-                            cliprz::system(error)->show_404();
-                        }
-
                     }
 
                     // if regex matched break the loop

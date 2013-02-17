@@ -10,13 +10,13 @@
  *  Official website http://www.cliprz.org .
  *
  * File information :
- *  File path BASE_PATH/cliprz_system/databases/exceptions/ .
- *  File name database_exception.php .
- *  Created date 10/02/2013 11:36 AM.
- *  Last modification date 10/02/2013 11:36 AM.
+ *  File path BASE_PATH/cliprz_system/sessions/exceptions/ .
+ *  File name session_exception.php .
+ *  Created date 16/02/2013 06:34 PM.
+ *  Last modification date 16/02/2013 06:36 PM.
  *
  * Description :
- *  Database Object Exceptions.
+ *  Session Object Exceptions.
  *
  * Licenses :
  *  This program is released as free software under the Affero GPL license. You can redistribute it and/or
@@ -27,6 +27,6 @@
 
 if (!defined("IN_CLIPRZ")) die('Access Denied');
 
-class database_exception extends Exception {}
+class session_exception extends Exception {}
 
 ?>

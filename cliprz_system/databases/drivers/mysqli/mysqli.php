@@ -6,14 +6,14 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.1.0 - Stability Beta.
+ *  Version 1.1.0 - Stability Stable.
  *  Official website http://www.cliprz.org .
  *
  * File information :
  *  File path BASE_PATH/cliprz_system/databases/drivers/mysqli/.
  *  File name mysqli.php .
  *  Created date 06/01/2013 02:29 PM.
- *  Last modification date 10/02/2013 05:45 AM.
+ *  Last modification date 16/02/2013 03:39 PM.
  *
  * Description :
  *  Mysqli database class.
@@ -49,16 +49,22 @@ class cliprz_database_driver_mysqli
      */
     public function connect ()
     {
-        global $_config;
 
         // Check if $_config['db']['port'] is null.
-        if ($_config['db']['port'] === null)
+        if (cliprz::system(config)->get('db','port') === null)
         {
-            $this->link_identifier = @mysqli_connect($_config['db']['host'],$_config['db']['user'],$_config['db']['pass']);
+            $this->link_identifier = @mysqli_connect(
+            cliprz::system(config)->get('db','host'),
+            cliprz::system(config)->get('db','user'),
+            cliprz::system(config)->get('db','pass'));
         }
         else // add $_config['db']['port'] in connections
         {
-            $this->link_identifier = @mysqli_connect($_config['db']['host'],$_config['db']['user'],$_config['db']['pass'],$_config['db']['port']);
+            $this->link_identifier = @mysqli_connect(
+            cliprz::system(config)->get('db','host'),
+            cliprz::system(config)->get('db','user'),
+            cliprz::system(config)->get('db','pass'),
+            cliprz::system(config)->get('db','port'));
         }
 
         // Check connections
@@ -90,8 +96,7 @@ class cliprz_database_driver_mysqli
      */
     public function select_db ()
     {
-        global $_config;
-        mysqli_select_db($this->link_identifier,$_config['db']['name']);
+        mysqli_select_db($this->link_identifier,cliprz::system(config)->get('db','name'));
     }
 
     /**
@@ -101,8 +106,7 @@ class cliprz_database_driver_mysqli
      */
     public function set_charset ()
     {
-        global $_config;
-        mysqli_set_charset($this->link_identifier,$_config['db']['charset']);
+        mysqli_set_charset($this->link_identifier,cliprz::system(config)->get('db','charset'));
     }
 
     /**
@@ -396,8 +400,10 @@ class cliprz_database_driver_mysqli
      */
     public function change_user ($database_name)
     {
-        global $_config;
-        return mysqli_change_user($_config['db']['user'],$_config['db']['pass'],$database_name);
+        return mysqli_change_user(
+            cliprz::system(config)->get('db','user'),
+            cliprz::system(config)->get('db','pass'),
+            $database_name);
     }
 
     /********************************************************************/

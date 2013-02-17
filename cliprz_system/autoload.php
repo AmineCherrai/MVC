@@ -6,14 +6,14 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.1.0 - Stability Beta.
+ *  Version 1.1.0 - Stability Stable.
  *  Official website http://www.cliprz.org .
  *
  * File information :
  *  File path BASE_PATH/cliprz_system/ .
  *  File name autoload.php .
  *  Created date 17/10/2012 05:06 AM.
- *  Last modification date 08/02/2013 02:17 PM.
+ *  Last modification date 16/02/2013 03:45 PM.
  *
  * Description :
  *  Autoload , Never modify this file. This file contains the constants and system files, and functions.
@@ -125,25 +125,6 @@ else
 
     exit(APP_PATH.'config'.DS.'config.php not found.');
 
-// Database constants.
-if (is_bool($_config['db']['use_database']) && $_config['db']['use_database'] == true)
-{
-    /**
-     * @def (string) C_DATABASE_CHARSET - Get database charset.
-     */
-    define("C_DATABASE_CHARSET",$_config['db']['charset'],true);
-
-    /**
-     * @def (string) C_DATABASE_COLLATION - Get server connection collation.
-     */
-    define("C_DATABASE_COLLATION",$_config['db']['collation'],true);
-
-    /**
-     * @def (string) C_DATABASE_PREFIX - Get database prefix.
-     */
-    define("C_DATABASE_PREFIX",$_config['db']['prefix'],true);
-}
-
 // Include flags
 require_once SYS_PATH.'flags/flags.php';
 
@@ -186,13 +167,34 @@ else
 
 //cliprz::get_instance();
 
+cliprz::system_use(config,config);
+
+// Database constants.
+if (cliprz::system(config)->get('db','use_database') === true)
+{
+    /**
+     * @def (string) C_DATABASE_CHARSET - Get database charset.
+     */
+    define("C_DATABASE_CHARSET",cliprz::system(config)->get('db','charset'),true);
+
+    /**
+     * @def (string) C_DATABASE_COLLATION - Get server connection collation.
+     */
+    define("C_DATABASE_COLLATION",cliprz::system(config)->get('db','collation'),true);
+
+    /**
+     * @def (string) C_DATABASE_PREFIX - Get database prefix.
+     */
+    define("C_DATABASE_PREFIX",cliprz::system(config)->get('db','prefix'),true);
+}
+
 cliprz::system_use(security,security);
 
 cliprz::system_use(language.'s',language);
 
 cliprz::system_use(error.'s',error);
 
-if ($_config['db']['use_database'] == true)
+if (cliprz::system(config)->get('db','use_database') === true)
 {
     define("database",'database',true);
     cliprz::system_use(database.'s',database);
@@ -206,6 +208,8 @@ if (file_exists(APP_PATH.'config'.DS.'wakeup.php'))
 
     require_once APP_PATH.'config'.DS.'wakeup.php';
 
+// Start console
+cliprz::system_use('console','console');
 
 cliprz::system_use(session.'s',session);
 
@@ -242,7 +246,7 @@ if (file_exists(APP_PATH.'config'.DS.'router.php'))
 
 
 // Call Cliprz admin panel if enabled.
-if ($_config['cap']['enabled'] === true)
+if (cliprz::system(config)->get('cap','enabled') === true)
 {
     cliprz::system_use(cap,cap);
 

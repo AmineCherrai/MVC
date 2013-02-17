@@ -6,14 +6,14 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.1.0 - Stability Beta.
+ *  Version 1.1.0 - Stability Stable.
  *  Official website http://www.cliprz.org .
  *
  * File information :
  *  File path BASE_PATH/cliprz_system/databases/ .
  *  File name database.php .
  *  Created date 06/01/2013 01:52 PM.
- *  Last modification date 10/02/2013 11:42 AM.
+ *  Last modification date 16/02/2013 03:35 PM.
  *
  * Description :
  *  Database abstract class.
@@ -90,10 +90,8 @@ class cliprz_database
      */
     protected static function load_driver ()
     {
-        global $_config;
-
         // Get driver name
-        $driver_name = strtolower($_config['db']['driver']);
+        $driver_name = strtolower(cliprz::system(config)->get('db','driver'));
 
         // Get driver path
         $driver_path = SYS_PATH.database.'s'.DS.'drivers'.DS.$driver_name.DS.$driver_name.'.php';
@@ -107,7 +105,7 @@ class cliprz_database
                 include $driver_path;
 
                 // Get driver define.
-                $driver_define = strtoupper(CLIPRZ.'_DATABASE_DRIVER_'.$_config['db']['driver'].'_INCLUDED');
+                $driver_define = strtoupper(CLIPRZ.'_DATABASE_DRIVER_'.cliprz::system(config)->get('db','driver').'_INCLUDED');
 
                 // Check if is defined CLIPRZ_DATABASE_DRIVER_NAME_INCLUDED.
                 if (defined($driver_define))
@@ -133,7 +131,7 @@ class cliprz_database
             }
             else
             {
-                throw new database_exception($_config['db']['driver'].' driver not exists.');
+                throw new database_exception(cliprz::system(config)->get('db','driver').' driver not exists.');
             }
         }
         catch (database_exception $e)

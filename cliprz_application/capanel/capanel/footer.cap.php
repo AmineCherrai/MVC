@@ -1,3 +1,4 @@
+<?php if (!defined("IN_CLIPRZ")) die('Access Denied'); ?>
             </td>
             <!--/content-side-->
         </tr>

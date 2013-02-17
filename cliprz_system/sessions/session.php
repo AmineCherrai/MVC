@@ -6,14 +6,14 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.1.0 - Stability Beta.
+ *  Version 1.1.0 - Stability Stable.
  *  Official website http://www.cliprz.org .
  *
  * File information :
  *  File path BASE_PATH/cliprz_system/sessions/ .
  *  File name session.php .
  *  Created date 01/12/2012 01:02 PM.
- *  Last modification date 02/02/2013 05:50 PM.
+ *  Last modification date 16/02/2013 06:37 PM.
  *
  * Description :
  *  Sessions class.
@@ -26,6 +26,8 @@
  */
 
 if (!defined("IN_CLIPRZ")) die('Access Denied');
+
+c_call_exception (session,session.'s');
 
 class cliprz_session
 {
@@ -43,18 +45,16 @@ class cliprz_session
      */
     public function __construct()
     {
-        global $_config;
-
+        $cookies_name = c_mb_strtoupper(cliprz::system(config)->get('session','name'));
         // Set new session name.
-        if (isset($_config['session']['name']) && !empty($_config['session']['name']))
+        if (isset($cookies_name) && !empty($cookies_name))
         {
-            ini_set('session.name',strtoupper($_config['session']['name']));
+            ini_set('session.name',$cookies_name);
         }
         else
         {
-            ini_set('session.name',strtoupper(self::$session_name));
+            ini_set('session.name',c_mb_strtoupper(self::$session_name));
         }
-
 
         // gc_maxlifetime
         self::session_gc_configuration("gc_maxlifetime");
@@ -65,7 +65,15 @@ class cliprz_session
         // gc_divisor
         self::session_gc_configuration("gc_divisor");
 
-        self::handler();
+        try
+        {
+            self::handler();
+        }
+        catch (session_exception $e)
+        {
+            c_log_error($e,'WARNING');
+        }
+
         self::hijacking();
     }
 
@@ -77,14 +85,14 @@ class cliprz_session
      */
     protected static function session_gc_configuration ($gc)
     {
-        global $_config;
+        $gc_conf = cliprz::system(config)->get('session',$gc);
 
-        if (isset($_config['session'][$gc])
-        && !empty($_config['session'][$gc])
-        && is_integer($_config['session'][$gc]))
+        if (isset($gc_conf) && !empty($gc_conf) && is_integer($gc_conf))
         {
-            ini_set('session.'.$gc,$_config['session'][$gc]);
+            ini_set('session.'.$gc,cliprz::system(config)->get('session',$gc));
         }
+
+        unset($gc_conf);
     }
 
     /**
@@ -94,20 +102,16 @@ class cliprz_session
      */
     protected static function handler ()
     {
-        global $_config;
-
-        if ($_config['session']['use_handler'] === true)
+        if (cliprz::system(config)->get('session','use_handler') === true)
         {
-            if (is_string($_config['session']['handler_type'])
-            && $_config['session']['handler_type'] == 'files')
+            if (cliprz::system(config)->get('session','handler_type') === 'files')
             {
                 cliprz::system_use(session.'s',session.'_handler_files');
             }
-            else if (is_string($_config['session']['handler_type'])
-            && $_config['session']['handler_type'] == 'database')
+            else if (cliprz::system(config)->get('session','handler_type') === 'database')
             {
                 // Get driver name
-                $driver_name = strtolower($_config['db']['driver']);
+                $driver_name = strtolower(cliprz::system(config)->get('db','driver'));
 
                 // Get session driver path
                 $session_driver_path = 'databases'.DS.'drivers'.DS.$driver_name.DS;
@@ -125,19 +129,15 @@ class cliprz_session
                 }
                 else // Or show error
                 {
-                    trigger_error(
+                    throw new session_exception(
                         $driver_name
                         .' Does not have a session handler.
-                        the solution is replace $_config[\'session\'][\'handler_type\'] from database to files.'
-                        ,E_WARNING);
+                        the solution is replace $_config[\'session\'][\'handler_type\'] from database to files.');
                 }
             }
             else
             {
-                trigger_error(
-                    "Sessions handler error,
-                    Handler type must be files or database or you can close session handler",
-                    E_WARNING);
+                throw new session_exception('Sessions handler error, Handler type must be files or database or you can close session handler.');
             }
         }
         else

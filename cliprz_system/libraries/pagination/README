@@ -72,9 +72,8 @@ cliprz::system(router)->rule(array(
 ));
 
 cliprz::system(router)->rule(array(
-    "regex"  => "test/check",
-    "class"  => "test",
-    "method" => "POST"
+    "regex" => "test",
+    "class" => "test"
 ));
 
 ?>

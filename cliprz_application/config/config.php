@@ -6,14 +6,14 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.1.0 - Stability Beta.
+ *  Version 1.1.0 - Stability Stable.
  *  Official website http://www.cliprz.org .
  *
  * File information :
  *  File path BASE_PATH/cliprz_application/config/ .
  *  File name config.php .
  *  Created date 21/11/2012 01:00 AM.
- *  Last modification date 14/02/2013 03:49 PM.
+ *  Last modification date 16/02/2013 05:22 PM.
  *
  * Description :
  *  Configuration file.
@@ -163,20 +163,24 @@ $_config['uri']['protocol'] = "REQUEST_URI";
 /**
  * Console and execution.
  *
+ * @var (boolean) $_config['console']['enabled']   - Enable Console, Checking all folders,files and System health.
  * @var (boolean) $_config['console']['execute']   - Show execution time if true, Note you should in C_DEVELOPMENT_ENVIRONMENT to get this execution.
  * @var (boolean) $_config['console']['benchmark'] - Calculate Cliprz framework Project speed.
  */
-$_config['console']['execute']   = true; // Warning make it false if you are in real server.
+$_config['console']['enabled']   = true;
+$_config['console']['execute']   = false; // Warning make it false if you are in real server.
 //$_config['console']['benchmark'] = false; // Warning make it false if you are in real server.
 
 /**
  * CAP - Cliprz Admin Panel.
  *
  * @var (boolean) $_config['cap']['enabled'] - Enable capanel to use it in you project, by the way you can create your admin panel as you wish without useing capanel.
+ * @var (boolean) $_config['cap']['create']  - Create a new capanel options as in example (Contoller-folders-files-actions), If value is true CAPanel will show create form in CAPanel home page.
  * @var (string)  $_config['cap']['name']    - Capanel name in routing as in example if value is 'capanel' all urls will http://example/capanel/rules.
  * @var (string)  $_config['cap']['theme']   - Capanel theme.
  */
 $_config['cap']['enabled'] = false;
+$_config['cap']['create']  = false;
 $_config['cap']['name']    = 'CAPanel';
 $_config['cap']['theme']   = "default";
 

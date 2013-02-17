@@ -6,14 +6,14 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.1.0 - Stability Beta.
+ *  Version 1.1.0 - Stability Stable.
  *  Official website http://www.cliprz.org .
  *
  * File information :
  *  File path BASE_PATH/cliprz_system/functions/ .
  *  File name datetime.functions.php .
  *  Created date 29/12/2012 10:50 AM.
- *  Last modification 27/01/2013 06:35 AM.
+ *  Last modification 16/02/2013 06:02 PM.
  *
  * Description :
  *  Date and Time Functions.
@@ -263,8 +263,9 @@ if (!function_exists('c_time_ago'))
         $lengths         = array("60","60","24","7","4.35","12","10");
 
         $now             = time();
-	$unix_date = (is_numeric($time) ? $time : strtotime($time)); 
-	
+        //$unix_date       = strtotime($time); // Removed By Bo.SaQeR.
+        $unix_date = (is_numeric($time) ? $time : strtotime($time)); // Fixed By Bo.SaQeR.
+
         // check validity of date
         if(empty($unix_date))
         {
@@ -275,7 +276,8 @@ if (!function_exists('c_time_ago'))
         if($now > $unix_date)
         {
             $difference = $now - $unix_date;
-            $tense      = c_lang('c_ago'); 
+            //$tense      = c_lang('c_bad_date'); // Removed By Bo.SaQeR.
+            $tense      = c_lang('c_ago'); // Fixed By Bo.SaQeR.
         }
         else
         {

@@ -6,14 +6,14 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.1.0 - Stability Beta.
+ *  Version 1.1.0 - Stability Stable.
  *  Official website http://www.cliprz.org .
  *
  * File information :
  *  File path BASE_PATH/cliprz_system/router/ .
  *  File name uri.php .
  *  Created date 19/01/2013 01:50 PM.
- *  Last modification date 19/01/2013 10:23 PM.
+ *  Last modification date 16/02/2013 03:58 PM.
  *
  * Description :
  *  uri class.
@@ -37,11 +37,9 @@ class cliprz_uri
      */
     public static function uri_protocol ()
     {
-        global $_config;
-
         $uri_protocol = null;
 
-        switch ($_config['uri']['protocol'])
+        switch (cliprz::system(config)->get('uri','protocol'))
         {
             case "REQUEST_URI":
                 $uri_protocol = self::request_uri();

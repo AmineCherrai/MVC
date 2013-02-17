@@ -1,3 +1,4 @@
+<?php if (!defined("IN_CLIPRZ")) die('Access Denied'); ?>
 <table>
     <thead>
     <tr>
@@ -7,7 +8,7 @@
     <tbody>
         <tr>
             <td class="tbl1" style="width: 50%;">PHP version : <?php echo phpversion(); ?></td>
-            <td class="tbl2" style="width: 50%;">Cliprz framework version : <?php echo cliprz::get_framework('version'); ?></td>
+            <td class="tbl2" style="width: 50%;">Cliprz framework version : <?php echo cliprz::get_framework('version'); ?> <?php echo cliprz::get_framework('stability'); ?></td>
         </tr>
         <tr>
             <td class="tbl2" style="width: 50%;">Safe mode : <?php echo (ini_get('safe_mode') == true) ? 'On' : 'Off'; ?></td>

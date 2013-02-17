@@ -6,14 +6,14 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.1.0 - Stability Beta.
+ *  Version 1.1.0 - Stability Stable.
  *  Official website http://www.cliprz.org .
  *
  * File information :
  *  File path BASE_PATH/cliprz_system/capanel/ .
  *  File name capanel.php .
  *  Created date 05/02/2013 03:39 AM.
- *  Last modification date 14/02/2013 04:48 PM.
+ *  Last modification date 16/02/2013 04:56 PM.
  *
  * Description :
  *  CAPanel class to create admin panel, in MVC named (scaffold).
@@ -61,11 +61,8 @@ class cliprz_capanel
      */
     public function __construct()
     {
-
-        global $_config;
-
         // Check if database is true.
-        if ($_config['db']['use_database'] === false)
+        if (cliprz::system(config)->get('db','use_database') === false)
         {
             exit('You cannot use CAPanel you must use database.');
         }
@@ -145,16 +142,14 @@ class cliprz_capanel
      */
     public static function get_info ($data)
     {
-        global $_config;
-
         $information = array(
-            'name'            => $_config['cap']['name'],
-            'router'          => $_config['cap']['name'].DS,
-            'theme_path'      => PUBLIC_PATH.'capanel'.DS.$_config['cap']['theme'].DS,
+            'name'            => cliprz::system(config)->get('cap','name'),
+            'router'          => cliprz::system(config)->get('cap','name').DS,
+            'theme_path'      => PUBLIC_PATH.'capanel'.DS.cliprz::system(config)->get('cap','theme').DS,
             'public_path'     => PUBLIC_PATH.'capanel'.DS,
             'controller_path' => APP_PATH.'controllers'.DS.'capanel'.DS,
             'view_path'       => APP_PATH.'capanel'.DS,
-            'theme_url'       => C_URL.'public'.DS.'capanel'.DS.$_config['cap']['theme'].DS,
+            'theme_url'       => C_URL.'public'.DS.'capanel'.DS.cliprz::system(config)->get('cap','theme').DS,
             'data_path'       => SYS_PATH.'capanel'.DS.'data'.DS
         );
 
@@ -381,6 +376,12 @@ class cliprz_capanel
      */
     protected static function home_router_rules ()
     {
+
+        cliprz::system(router)->rule(array(
+            "regex"       => cliprz::system(config)->get('cap','name'),
+            "redirecting" => self::router('home')
+        ));
+
         cliprz::system(router)->rule(array(
             "regex" => self::router('home'),
             "class" => 'capanel_home',

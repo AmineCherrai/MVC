@@ -6,7 +6,7 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.1.0 - Stability Beta.
+ *  Version 1.1.0 - Stability Stable.
  *  Official website http://www.cliprz.org .
  *
  * File information :
@@ -51,7 +51,6 @@ class cliprz_database_driver_{drivername}
      */
     public function connect ()
     {
-        global $_config;
         // Start your connection here you can global the $_config[db] here.
     }
 
@@ -72,7 +71,6 @@ class cliprz_database_driver_{drivername}
      */
     public function select_db ()
     {
-        global $_config;
         // Start selection here add you function to select a new database or return to true if don't have a function for this.
     }
 
@@ -83,7 +81,6 @@ class cliprz_database_driver_{drivername}
      */
     public function set_charset ()
     {
-        global $_config;
         //  Sets the default client character set or return to true if don't have a function for this.
     }
 

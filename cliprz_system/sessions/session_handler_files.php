@@ -6,14 +6,14 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.1.0 - Stability Beta.
+ *  Version 1.1.0 - Stability Stable.
  *  Official website http://www.cliprz.org .
  *
  * File information :
  *  File path BASE_PATH/cliprz_system/sessions/ .
  *  File name session_handler_files.php .
  *  Created date 27/01/2013 08:41 AM.
- *  Last modification date 31/01/2013 07:38 AM.
+ *  Last modification date 16/02/2013 04:04 PM.
  *
  * Description :
  *  Sessions handler with files class.
@@ -50,9 +50,7 @@ class cliprz_session_handler_files
      */
     public function __construct()
     {
-        global $_config;
-
-        $session_save_path = c_rtrim_path($_config['session']['save_path']).DS;
+        $session_save_path = c_rtrim_path(cliprz::system(config)->get('session','save_path')).DS;
 
         if (is_dir($session_save_path))
         {
@@ -80,15 +78,17 @@ class cliprz_session_handler_files
         register_shutdown_function('session_write_close');
 
 
-        $cookie_domain = (is_null($_config['session']['cookie_domain'])) ? "" : $_config['session']['cookie_domain'];
+        $cookie_domain = (is_null(cliprz::system(config)->get('session','cookie_domain')))
+            ? ""
+            : cliprz::system(config)->get('session','cookie_domain');
 
 
         session_set_cookie_params(
-            $_config['session']['cookie_lifetime'],
-            $_config['session']['cookie_path'],
+            cliprz::system(config)->get('session','cookie_lifetime'),
+            cliprz::system(config)->get('session','cookie_path'),
             $cookie_domain,
-            $_config['session']['cookie_secure'],
-            $_config['session']['cookie_httponly']);
+            cliprz::system(config)->get('session','cookie_secure'),
+            cliprz::system(config)->get('session','cookie_httponly'));
 
         unset($cookie_domain);
 

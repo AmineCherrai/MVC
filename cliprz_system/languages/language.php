@@ -6,14 +6,14 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.1.0 - Stability Beta.
+ *  Version 1.1.0 - Stability Stable.
  *  Official website http://www.cliprz.org .
  *
  * File information :
  *  File path BASE_PATH/cliprz_system/languages/ .
  *  File name language.php .
  *  Created date 20/12/2012 06:24 PM.
- *  Last modification date 10/02/2013 11:49 AM.
+ *  Last modification date 16/02/2013 03:56 PM.
  *
  * Description :
  *  Languages class.
@@ -53,11 +53,9 @@ class cliprz_language
      */
     public function __construct()
     {
-        global $_config;
-
         try
         {
-            self::load_language($_config['language']['name']);
+            self::load_language(cliprz::system(config)->get('language','name'));
         }
         catch (language_exception $e)
         {
@@ -74,7 +72,6 @@ class cliprz_language
      */
     protected static function load_language ($language_name)
     {
-
         global $_lang;
 
         $languages_path = APP_PATH."languages".DS.$language_name.DS;

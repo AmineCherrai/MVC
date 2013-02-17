@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * Note if you finish up your project remove below methods.
+ *  self::get_tables();
+ *  self::get_primary_key();
+ *  self::create();
+ *
+ * Do not forget to edit $_config['cap']['create'] from config.php file to false.
+ */
+
+if (!defined("IN_CLIPRZ")) die('Access Denied');
+
 class capanel_home
 {
 
@@ -10,24 +21,29 @@ class capanel_home
      */
     public function index ()
     {
-        global $_config;
-
         cliprz::system(cap)->set_title("Welcome to CAP");
 
         cliprz::system(cap)->display('header','capanel');
         cliprz::system(cap)->display('content','capanel');
-        cliprz::system(cap)->display('create','capanel');
+
+        // If $_config['cap']['create'] = true; display create folder
+        if (cliprz::system(config)->get('cap','create') === true)
+        {
+            cliprz::system(cap)->display('create','capanel');
+        }
+
         cliprz::system(cap)->display('footer','capanel');
-        //cliprz::system(cap)->display('login','capanel');
+
+        // This is login form not for real use only example
+        // Before removing # comment mark remove all display files above.
+        #cliprz::system(cap)->display('login','capanel');
     }
 
     public function get_tables ()
     {
-        global $_config;
-
         if (isset($_POST['create']) && $_POST['create'] == 'new')
         {
-            $query = cliprz::system(database)->query("SHOW TABLES FROM `".$_config['db']['name']."`");
+            $query = cliprz::system(database)->query("SHOW TABLES FROM `".cliprz::system(config)->get('db','name')."`");
 
             if (cliprz::system(database)->num_rows($query))
             {
@@ -42,7 +58,7 @@ class capanel_home
             }
             else
             {
-                echo "No tables in database ".$_config['db']['name'];
+                echo "No tables in database ".cliprz::system(config)->get('db','name');
             }
         }
         else
