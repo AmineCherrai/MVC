@@ -263,8 +263,8 @@ if (!function_exists('c_time_ago'))
         $lengths         = array("60","60","24","7","4.35","12","10");
 
         $now             = time();
-        $unix_date       = strtotime($time);
-
+	$unix_date = (is_numeric($time) ? $time : strtotime($time)); 
+	
         // check validity of date
         if(empty($unix_date))
         {
@@ -275,7 +275,7 @@ if (!function_exists('c_time_ago'))
         if($now > $unix_date)
         {
             $difference = $now - $unix_date;
-            $tense      = c_lang('c_bad_date');
+            $tense      = c_lang('c_ago'); 
         }
         else
         {
