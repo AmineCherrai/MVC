@@ -16,19 +16,19 @@ http://www.cliprz.org
 Developers
 ==========
 
-Amer Alrdadi
-Ali Mohammed Al-barrak
-Albert Negix
-Abdualrhman Ali Alruwaili
-Abdulrahman Al-Saqer
-Bil ElMoussaoui
-Hussam Alzahabi
-Mohamed Fergany Telep
-Mahdi Jouini
-Mohammed Nasser
-Mohammad Abdelmajeed Mohammad 
-Odai Alghamdi
-Turki Mohammed Alawlqy
+Amer Alrdadi,
+Ali Mohammed Al-barrak,
+Albert Negix,
+Abdualrhman Ali Alruwaili,
+Abdulrahman Al-Saqer,
+Bil ElMoussaoui,
+Hussam Alzahabi,
+Mohamed Fergany Telep,
+Mahdi Jouini,
+Mohammed Nasser,
+Mohammad Abdelmajeed Mohammad,
+Odai Alghamdi,
+Turki Mohammed Alawlqy,
 Youssef Subehi
 
 License
