@@ -16,8 +16,7 @@ http://www.cliprz.org
 Developers
 ==========
 
-Albert Negix,
-Youssef Subehi
+Albert Negix
 
 License
 =======
