@@ -132,7 +132,8 @@ class library_simple_upload
             $file_information = self::get_file_information($filename);
 
             // Check extension from get self::file_information method();
-            if (in_array(mb_strtolower($file_information['extension']),mb_strtolower($extensions)))
+            $extensions = explode(', ', mb_strtolower(implode(', ', $extensions))); // mb_strtolower only fon string not for arrays
+            if (in_array(mb_strtolower($file_information['extension']), $extensions))
             {
                 // Now check via regular expression. as in example "`\.(?:jpe?g|png|gif)$`"
                 $regular_expression_extensions = implode("|",$extensions);
@@ -174,7 +175,8 @@ class library_simple_upload
     {
         if (is_array($mime_types))
         {
-            if (in_array(mb_strtolower($file),mb_strtolower($mime_types)))
+	    $mime_types = explode(', ', mb_strtolower(implode(', ', $mime_types)));
+            if (in_array(mb_strtolower($file), $mime_types))
             {
                 return TRUE;
             }

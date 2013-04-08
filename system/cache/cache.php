@@ -49,7 +49,7 @@ class cliprz_cache
             }
             else
             {
-                if (mkdir($cache_folder,0777))
+                if (mkdir($cache_folder,0777, true)) // true for fix recursive in linux
                 {
                     self::conditions($filename,$cache_name,$data,$cache_time);
                 }
