@@ -46,7 +46,7 @@ class cliprz_session_handler
         if (!is_dir($this->save_path))
         {
             // If save path not exists create a folder
-            if (!mkdir($this->save_path,0777))
+            if (!mkdir($this->save_path,0777, true)) // true for fix recursive in linux
             {
                 exit('cannot create '.$this->save_path);
             }
