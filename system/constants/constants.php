@@ -79,6 +79,11 @@ define('router','router',TRUE);
 define('rotr',router,TRUE); // Short constant
 
 /**
+ * Call encrypt constant
+ */
+define('encrypt','encrypt',TRUE); // Add by Amer Alrdadi
+
+/**
  * HTML & files flags
  */
 define("\r\n",'NEWLINE',true);
