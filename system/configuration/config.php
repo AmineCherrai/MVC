@@ -27,11 +27,11 @@ class cliprz_config
     /**
      * Main Configuration array keys
      *
-     * @var array $kyes
+     * @var array $keys
      * @access private
      * @static
      */
-    private static $kyes = array(
+    private static $keys = array(
         'database','project','session',
         'language','protocol','time'
     );
@@ -68,7 +68,7 @@ class cliprz_config
         if (is_array($_config))
         {
             // Foreach array main keys
-            foreach (self::$kyes as $key)
+            foreach (self::$keys as $key)
             {
                 // Check if key exists
                 if (array_key_exists($key,$_config))

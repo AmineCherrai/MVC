@@ -196,7 +196,7 @@ class cliprz_session
 }
 
 /**
- * End of file filename.php
+ * End of file session.php
  *
  * @created  23/03/2013 09:30 am
  * @updated  25/03/2013 01:54 pm
