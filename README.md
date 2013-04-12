@@ -16,7 +16,9 @@ http://www.cliprz.org
 Developers
 ==========
 
-Albert Negix
+Albert Negix,
+[Ali M. Al-brrak](https://github.com/alaa13212 "Ali M. Al-brrak on Github"),
+[Amer Alrdadi](https://github.com/ameralrdadi "Amer Alrdadi on Github").
 
 License
 =======
