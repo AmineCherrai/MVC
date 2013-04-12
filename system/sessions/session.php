@@ -199,7 +199,7 @@ class cliprz_session
  * End of file session.php
  *
  * @created  23/03/2013 09:30 am
- * @updated  25/03/2013 01:54 pm
+ * @updated  12/04/2013 04:08 am
  * @location ./system/sessions/session.php
  */
 

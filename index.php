@@ -23,6 +23,8 @@ ob_start();
 
 if (version_compare(phpversion(),'5.3.0', "<")) exit('Please upgrade to PHP 5.3.0 or >');
 
+if (!gc_enabled()) { gc_enable(); }
+
 /**
  * We will use this to ensure scripts are not called from outside of the framework
  */
@@ -57,7 +59,7 @@ if (file_exists(APPLICATION_PATH.'config'.DS.'sleep'.EXT))
  * End of file index.php
  *
  * @created  20/03/2013 04:32 am
- * @updated  01/04/2013 06:23 pm
+ * @updated  12/04/2013 04:34 am
  * @location ./index.php
  */
 

@@ -242,17 +242,17 @@ class cliprz
                 }
                 else
                 {
-                    exit('class not founded.');
+                    trigger_error($obj.' class not founded.');
                 }
             }
             else
             {
-                exit('File not founded.');
+                trigger_error($path.' file not founded.');
             }
         }
         else
         {
-            exit($from.' not founded.');
+            trigger_error($from.' not indexed.');
         }
     }
 
@@ -380,7 +380,7 @@ class cliprz
  * End of file cliprz.php
  *
  * @created  20/03/2013 05:05 am
- * @updated  02/04/2013 05:40 pm
+ * @updated  03/04/2013 09:49 am
  * @location ./system/cliprz/cliprz.php
  */
 

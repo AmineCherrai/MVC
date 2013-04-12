@@ -118,7 +118,7 @@ class cliprz_config
  * End of file config.php
  *
  * @created  21/03/2013 03:31 pm
- * @updated  02/04/2013 06:44 pm
+ * @updated  12/04/2013 04:08 am
  * @location ./system/configuration/config.php
  */
 

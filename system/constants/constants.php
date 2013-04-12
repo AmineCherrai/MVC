@@ -67,12 +67,6 @@ define('validate','validate',TRUE);
 define('vld',validate,TRUE); // Short constant
 
 /**
- * Call string constant
- */
-define('string','string',TRUE);
-define('str',string,TRUE); // Short constant
-
-/**
  * Call router constant
  */
 define('router','router',TRUE);
@@ -86,14 +80,14 @@ define('encrypt','encrypt',TRUE); // Add by Amer Alrdadi
 /**
  * HTML & files flags
  */
-define("\r\n",'NEWLINE',true);
-define("\t",'NEWTAB',true);
+define('NEWLINE',"\r\n",TRUE);
+define('NEWTAB',"\t",TRUE);
 
 /**
  * End of file constants.php
  *
  * @created  20/03/2013 04:51 am
- * @updated  01/04/2013 05:52 pm
+ * @updated  12/04/2013 04:19 am
  * @location ./system/constants/constants.php
  */
 

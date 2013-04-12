@@ -49,7 +49,7 @@ class cliprz_cache
             }
             else
             {
-                if (mkdir($cache_folder,0777, true)) // true for fix recursive in linux
+                if (mkdir($cache_folder,0777,TRUE))
                 {
                     self::conditions($filename,$cache_name,$data,$cache_time);
                 }
@@ -166,7 +166,7 @@ class cliprz_cache
  * End of file cache.php
  *
  * @created  25/03/2013 02:07 pm
- * @updated  01/04/2013 06:09 pm
+ * @updated  12/04/2013 04:10 am
  * @location ./system/cache/cache.php
  */
 

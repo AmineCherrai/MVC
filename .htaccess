@@ -13,14 +13,6 @@
 Options +ExecCGI
 
 ##
- # It is very easy for anyone to view your Apache versions and other installed critical software on your server,
- # and if you don’t upgrade your server software like Apache to the latest versions,
- # and fail to fix security issues which these upgrades fix, then you don’t want anyone online to be aware about your server details.
- # Any simple online tool will show HTTP site headers of any site. So we recommend to Disable ServerSignature.
- ##
-ServerSignature Off
-
-##
  # Add Indexes
  ##
 Options All -Indexes

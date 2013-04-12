@@ -56,6 +56,11 @@ define('TEMPORARY_PATH',BASE_PATH.'temporary'.DS,TRUE);
 define('CACHE_PATH',APPLICATION_PATH.'cache'.DS,TRUE);
 
 /**
+ * Method to get includes folder
+ */
+define('INCLUDES_PATH',APPLICATION_PATH.'includes'.DS,TRUE);
+
+/**
  * Method to get assets path
  */
 define('ASSETS_PATH',BASE_PATH.'assets'.DS,TRUE);
@@ -113,6 +118,11 @@ require_once SYSTEM_PATH.'constants'.DS.'constants'.EXT;
  */
 require_once SYSTEM_PATH.'functions'.DS.'functions'.EXT;
 
+if (file_exists(APPLICATION_PATH.'config'.DS.'wakeup'.EXT))
+{
+    require_once APPLICATION_PATH.'config'.DS.'wakeup'.EXT;
+}
+
 // If CMA (Cliprz my admin) defined don not use router
 if (!defined('CMA'))
 {
@@ -127,16 +137,11 @@ if (!defined('CMA'))
     cliprz::system('router')->handler();
 }
 
-if (file_exists(APPLICATION_PATH.'config'.DS.'wakeup'.EXT))
-{
-    require_once APPLICATION_PATH.'config'.DS.'wakeup'.EXT;
-}
-
 /**
  * End of file autoload.php
  *
  * @created  20/03/2013 05:31 am
- * @updated  02/04/2013 06:43 pm
+ * @updated  06/04/2013 07:41 am
  * @location ./system/autoload.php
  */
 

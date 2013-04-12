@@ -2,10 +2,10 @@ What is Cliprz
 ==============
 
 It's a free and open source PHP framework written in PHP version 5.3.0 or higher,
-This framework help you to create a PHP project without writing big codes, It's easy, fast, simple and secure,
-What distinguishes Cliprz framework You can routing URLs without using controller/functions/parameters,
-You can use multi database drivers, Easy way to create fast admin panel (scaffold) system with full pages control,
-Help plugins and libraries, That's not all there is more, Let's start and learn Cliprz framework by visiting Manual.
+This framework help you to create a PHP project without writing big codes, It's easy,
+fast, simple and secure, What distinguishes Cliprz framework You can routing URLs without using controller/functions/parameters,
+You can use MySQL database driver object (easy MySQL system), Easy way to create fast admin panel (scaffold) system with full pages control,
+Help plugins and libraries, That's not all there is more. 
 
 Copyright
 =========
@@ -34,8 +34,8 @@ You can read the text file included with the project named agpl.txt or read a on
 Links
 =====
 
-[Official website](http://cliprz.org "Cliprz Official website"). 
-[twitter](http://twitter.com/cliprz "Cliprz on twitter"). 
-[Facebook groups](http://www.facebook.com/groups/cliprz.org "Cliprz on Facebook groups").
-[Fan page](http://www.facebook.com/CliprzFramework "Cliprz Fan page").
+[Official website](http://cliprz.org "Cliprz Official website") -
+[twitter](http://twitter.com/cliprz "Cliprz on twitter") -
+[Facebook groups](http://www.facebook.com/groups/cliprz.org "Cliprz on Facebook groups") -
+[Fan page](http://www.facebook.com/CliprzFramework "Cliprz Fan page") -
 [GitHub](http://github.com/Cliprz/MVC/ "Cliprz GitHub").
