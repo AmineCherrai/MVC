@@ -7,10 +7,18 @@ fast, simple and secure, What distinguishes Cliprz framework You can routing URL
 You can use MySQL database driver object (easy MySQL system), Easy way to create fast admin panel (scaffold) system with full pages control,
 Help plugins and libraries, That's not all there is more. 
 
+Version
+=======
+2.0.0 Beta 2
+
+Documents
+=========
+On [Official github pages](http://cliprz.github.io/cliprz/ "Cliprz Official github pages")
+
 Copyright
 =========
 Cliprz model view controller framework.
-Copyright &copy; 2012 - 2013 By Yousef Ismaeil.
+Copyright &copy; 2012 - 2013 By [Yousef Ismaeil](https://wwww.github.com/Cliprz/ "@Cliprz").
 http://www.cliprz.org
 
 Developers
