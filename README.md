@@ -18,7 +18,7 @@ On [Official github pages](http://cliprz.github.io/cliprz/ "Cliprz Official gith
 Copyright
 =========
 Cliprz model view controller framework.
-Copyright &copy; 2012 - 2013 By [Yousef Ismaeil](https://wwww.github.com/Cliprz/ "@Cliprz"), [www.cliprz.org](http://wwww.cliprz.org "Cliprz official website")
+Copyright &copy; 2012 - 2013 By [Yousef Ismaeil](https://www.github.com/Cliprz/ "@Cliprz"), [www.cliprz.org](http://wwww.cliprz.org "Cliprz official website")
 
 Developers
 ==========
