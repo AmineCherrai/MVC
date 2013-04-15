@@ -25,7 +25,8 @@ Developers
 
 Albert Negix,
 [Ali M. Al-brrak](https://github.com/alaa13212 "Ali M. Al-brrak on Github"),
-[Amer Alrdadi](https://github.com/ameralrdadi "Amer Alrdadi on Github").
+[Amer Al-rdadi](https://github.com/ameralrdadi "Amer Alrdadi on Github"),
+[Turki AL-Awlqy](https://github.com/turkialawlqy "Turki AL-Awlqy on Github").
 
 License
 =======
