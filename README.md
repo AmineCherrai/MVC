@@ -28,6 +28,10 @@ Albert Negix,
 [Amer Al-rdadi](https://github.com/ameralrdadi "Amer Alrdadi on Github"),
 [Turki AL-Awlqy](https://github.com/turkialawlqy "Turki AL-Awlqy on Github").
 
+With thanks
+===========
+Bruno Getulio - Add (Brazil language)﻿in documents.
+
 License
 =======
 
