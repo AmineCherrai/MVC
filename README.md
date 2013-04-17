@@ -1,11 +1,14 @@
 What is Cliprz
 ==============
 
-It's a free and open source PHP framework written in PHP version 5.3.0 or higher,
-This framework help you to create a PHP project without writing big codes, It's easy,
-fast, simple and secure, What distinguishes Cliprz framework You can routing URLs without using controller/functions/parameters,
-You can use MySQL database driver object (easy MySQL system), Easy way to create fast admin panel (scaffold) system with full pages control,
-Help plugins and libraries, That's not all there is more. 
+The Cliprz program is a free PHP framework open source written in PHP version 5.3.0 or later.
+It helps you create a project without needing to insert PHP big codes.
+What distinguishes Cliprz Framework is that it is easy, quick,
+simple and secure. There you can route URLs without using controller / functions / parameters.
+Additionally, you can use controller MySQL databases (MySQL easy system).
+One easy way to create a quick admin panel (scaffold) system with full control pages.
+And it can help you with plugins, library and more!,
+Let's start and learn Cliprz framework by visiting Manual.
 
 Version
 =======
