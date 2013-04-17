@@ -26,7 +26,7 @@ Copyright &copy; 2012 - 2013 By [Yousef Ismaeil](https://www.github.com/Cliprz/ 
 Developers
 ==========
 
-Albert Negix,
+[Albert Negix](https://github.com/Negix "Albert Negix on Github"),
 [Ali M. Al-brrak](https://github.com/alaa13212 "Ali M. Al-brrak on Github"),
 [Amer Al-rdadi](https://github.com/ameralrdadi "Amer Alrdadi on Github"),
 [Turki AL-Awlqy](https://github.com/turkialawlqy "Turki AL-Awlqy on Github").
