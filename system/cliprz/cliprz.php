@@ -300,7 +300,18 @@ class cliprz
     {
         return self::initialize ($class,'system');
     }
-
+    /**
+     * Get Short sys object
+     *
+     * @param string $class Object name
+     *
+     * @access public
+     * @static
+     */
+    public static function sys ($class)
+    {
+        return self::system ($class);
+    }
     /**
      * Get model object
      *
