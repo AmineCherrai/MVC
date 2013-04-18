@@ -2,9 +2,9 @@
 ============
 
 <ol>
-  <li></li>
-  <li></li>
-  <li></li>
+  <li>https://github.com/Cliprz/cliprz/pull/35</li>
+  <li>https://github.com/Cliprz/cliprz/pull/36</li>
+  <li>https://github.com/Cliprz/cliprz/pull/38</li>
 </ol>
 
 * * *
