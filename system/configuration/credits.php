@@ -38,8 +38,9 @@ function developers ()
         ),
 
         'Albert Negix' => array(
-            'email'       => 'negix@cliprz.org',
+            'email'       => 'negix@outlook.com',
             'website'     => 'http://www.cliprz.org',
+            'github'      => 'http://www.github.com/Negix',
             'description' => 'PHP and javascript Developer',
             'since'       => '1.1.0',
             'country'     => 'Australia'
