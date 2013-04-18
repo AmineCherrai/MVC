@@ -10,15 +10,21 @@ One easy way to create a quick admin panel (scaffold) system with full control p
 And it can help you with plugins, library and more!,
 Let's start and learn Cliprz framework by visiting Manual.
 
+* * *
+
 Version
 =======
 2.0.0 Beta 2
 [Download 2.0.0 Beta .zip](https://github.com/Cliprz/cliprz/zipball/master "2.0.0 Beta 2 as zip")
 [Download 2.0.0 Beta .tar](https://github.com/Cliprz/cliprz/tarball/master "2.0.0 Beta 2 as tar")
 
+* * *
+
 Documents
 =========
 On [Official github pages](http://cliprz.github.io/cliprz/ "Cliprz Official github pages")
+
+* * *
 
 Copyright
 =========
@@ -35,6 +41,8 @@ Copyright &copy; 2012 - 2013 by the Cliprz Development Team.
 Cliprz framework licensed under GNU AFFERO GENERAL PUBLIC LICENSE, Version 3,
 You can read the text file included with the project named agpl.txt or read a online version http://www.gnu.org/licenses/gpl.html.
 
+* * *
+
 Fork
 ====
 
@@ -50,6 +58,8 @@ SSH :
 git@github.com:Cliprz/cliprz.git
 ```
 
+* * *
+
 Developers
 ==========
 
@@ -58,10 +68,14 @@ Developers
 [Amer Al-rdadi](https://github.com/ameralrdadi "Amer Alrdadi on Github"),
 [Turki AL-Awlqy](https://github.com/turkialawlqy "Turki AL-Awlqy on Github").
 
+* * *
+
 With thanks
 ===========
 Bruno Getulio - Add Brazil language in documents.
 Dhari Al Kalaf - Bugs Tracker.
+
+* * *
 
 Links
 =====
