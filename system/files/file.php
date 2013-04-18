@@ -19,9 +19,6 @@
  * @license    http://www.cliprz.org/licenses/agpl
  * @link       http://www.cliprz.org
  * @since      Version 2.0.0
- * @deprecated File deprecated in Release 2.0.0
- * @filesource
- * @see
  */
 
 class cliprz_file
@@ -90,10 +87,6 @@ class cliprz_file
         {
             return (boolean) ((unlink($filename)) ? TRUE : FALSE);
         }
-        else
-        {
-            return FALSE;
-        }
     }
 
     /**
@@ -111,35 +104,13 @@ class cliprz_file
             {
                 if ($unlink === TRUE)
                 {
-                    if (rename($current_file,$move_to))
-                    {
-                        return TRUE;
-                    }
-                    else
-                    {
-                        return FALSE;
-                    }
+                    return rename($current_file,$move_to);
                 }
                 else
                 {
-                    if (copy($current_file,$move_to))
-                    {
-                        return TRUE;
-                    }
-                    else
-                    {
-                        return FALSE;
-                    }
+                    return copy($current_file,$move_to);
                 }
             }
-            else
-            {
-                return FALSE;
-            }
-        }
-        else
-        {
-            return FALSE;
         }
     }
 
@@ -149,7 +120,7 @@ class cliprz_file
  * End of file file.php
  *
  * @created  02/04/2013 05:35 pm
- * @updated  02/04/2013 06:04 pm
+ * @updated  19/04/2013 12:12 am
  * @location ./system/files/file.php
  */
 
