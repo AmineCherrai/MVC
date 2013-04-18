@@ -13,6 +13,8 @@ Let's start and learn Cliprz framework by visiting Manual.
 Version
 =======
 2.0.0 Beta 2
+[Download 2.0.0 Beta .zip](https://github.com/Cliprz/cliprz/zipball/master "2.0.0 Beta 2 as zip")
+[Download 2.0.0 Beta .tar](https://github.com/Cliprz/cliprz/tarball/master "2.0.0 Beta 2 as tar")
 
 Documents
 =========
@@ -21,7 +23,32 @@ On [Official github pages](http://cliprz.github.io/cliprz/ "Cliprz Official gith
 Copyright
 =========
 Cliprz model view controller framework.
-Copyright &copy; 2012 - 2013 By [Yousef Ismaeil](https://www.github.com/Cliprz/ "@Cliprz"), [www.cliprz.org](http://wwww.cliprz.org "Cliprz official website")
+Copyright &copy; 2012 - 2013 By [Yousef Ismaeil](https://www.github.com/Cliprz/ "@Cliprz"), [cliprz.org](http://wwww.cliprz.org "Cliprz official website")
+
+License :
+
+This program is released as free software under the Affero GPL license.
+You can redistribute it and/or modify it under the terms of this license which you can read by viewing the included agpl.txt or online at www.gnu.org/licenses/agpl.html.
+Removal of copyright header from files is strictly prohibited without written permission from the original author(s).
+
+Copyright &copy; 2012 - 2013 by the Cliprz Development Team.
+Cliprz framework licensed under GNU AFFERO GENERAL PUBLIC LICENSE, Version 3,
+You can read the text file included with the project named agpl.txt or read a online version http://www.gnu.org/licenses/gpl.html.
+
+Fork
+====
+
+Just clone in your computer :
+
+```code
+https://github.com/Cliprz/cliprz.git
+```
+
+SSH :
+
+```code
+git@github.com:Cliprz/cliprz.git
+```
 
 Developers
 ==========
@@ -33,24 +60,18 @@ Developers
 
 With thanks
 ===========
-Bruno Getulio - Add (Brazil language)﻿in documents.
-
-License
-=======
-
-This program is released as free software under the Affero GPL license.
-You can redistribute it and/or modify it under the terms of this license which you can read by viewing the included agpl.txt or online at www.gnu.org/licenses/agpl.html.
-Removal of copyright header from files is strictly prohibited without written permission from the original author(s).
-
-Copyright &copy; 2012 - 2013 by the Cliprz Development Team.
-Cliprz framework licensed under GNU AFFERO GENERAL PUBLIC LICENSE, Version 3,
-You can read the text file included with the project named agpl.txt or read a online version http://www.gnu.org/licenses/gpl.html.
+Bruno Getulio - Add Brazil language in documents.
+Dhari Al Kalaf - Bugs Tracker.
 
 Links
 =====
 
-[Official website](http://cliprz.org "Cliprz Official website") -
-[twitter](http://twitter.com/cliprz "Cliprz on twitter") -
-[Facebook groups](http://www.facebook.com/groups/cliprz.org "Cliprz on Facebook groups") -
-[Fan page](http://www.facebook.com/CliprzFramework "Cliprz Fan page") -
-[GitHub](http://github.com/Cliprz/MVC/ "Cliprz GitHub").
+[Official website](http://cliprz.org "Cliprz Official website")
+
+[twitter](http://twitter.com/cliprz "Cliprz on twitter")
+
+[Facebook groups](http://www.facebook.com/groups/cliprz.org "Cliprz on Facebook groups")
+
+[Fan page](http://www.facebook.com/CliprzFramework "Cliprz Fan page")
+
+[GitHub](http://github.com/Cliprz/cliprz "Cliprz on GitHub")
