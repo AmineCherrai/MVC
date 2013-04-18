@@ -46,6 +46,15 @@ function developers ()
             'country'     => 'Australia'
         ),
 
+        'Turki Alawlqy' => array(
+            'email'       => 'turkialawlqy@gmail.com',
+            'website'     => 'http://www.xf-ar.com',
+            'github'      => 'http://www.github.com/turkialawlqy',
+            'facebook'    => 'http://www.facebook.com/turkyalawlqy',
+            'description' => NULL,
+            'since'       => '1.1.0',
+            'country'     => 'Yemen'
+        ),
     );
 }
 
