@@ -83,11 +83,7 @@ Links
 =====
 
 [Official website](http://cliprz.org "Cliprz Official website")
-
 [twitter](http://twitter.com/cliprz "Cliprz on twitter")
-
 [Facebook groups](http://www.facebook.com/groups/cliprz.org "Cliprz on Facebook groups")
-
 [Fan page](http://www.facebook.com/CliprzFramework "Cliprz Fan page")
-
 [GitHub](http://github.com/Cliprz/cliprz "Cliprz on GitHub")
