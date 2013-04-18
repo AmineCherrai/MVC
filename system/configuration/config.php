@@ -112,13 +112,39 @@ class cliprz_config
         }
     }
 
+    /**
+     * Cahnge self::$config value
+     *
+     * @param string $key     Array main key
+     * @param string $sub_key Array sub key
+     * @param string $value   New value
+     *
+     * @access public
+     * @static
+     */
+    public static function value ($key,$sub_key,$value)
+    {
+        // Short Boolean IF's no need to return false.
+        if (is_array(self::$config))
+        {
+            if (array_key_exists($key,self::$config))
+            {
+                if (array_key_exists($sub_key,self::$config[$key]))
+                {
+                    self::$config[$key][$sub_key] = $value;
+                    return TRUE;
+                }
+            }
+        }
+    }
+
 }
 
 /**
  * End of file config.php
  *
  * @created  21/03/2013 03:31 pm
- * @updated  12/04/2013 04:08 am
+ * @updated  18/04/2013 02:00 pm
  * @location ./system/configuration/config.php
  */
 
