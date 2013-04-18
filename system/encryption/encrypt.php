@@ -159,7 +159,7 @@ class cliprz_encrypt
 
             $serial_number = $prepend.mb_strtoupper($result).$append;
 
-            unset($result);
+            // unset($result); # Removed by Negix
 
             return $serial_number;
         }
