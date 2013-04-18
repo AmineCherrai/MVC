@@ -15,8 +15,10 @@ Let's start and learn Cliprz framework by visiting Manual.
 Version
 =======
 2.0.0 Beta 2
-[Download 2.0.0 Beta .zip](https://github.com/Cliprz/cliprz/zipball/master "2.0.0 Beta 2 as zip")
-[Download 2.0.0 Beta .tar](https://github.com/Cliprz/cliprz/tarball/master "2.0.0 Beta 2 as tar")
+<ul>
+  <li>[Download 2.0.0 Beta .zip](https://github.com/Cliprz/cliprz/zipball/master "2.0.0 Beta 2 as zip")</li>
+  <li>[Download 2.0.0 Beta .tar](https://github.com/Cliprz/cliprz/tarball/master "2.0.0 Beta 2 as tar")</li>
+</ul>
 
 * * *
 
