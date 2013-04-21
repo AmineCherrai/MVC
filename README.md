@@ -16,12 +16,7 @@ Let's start and learn Cliprz framework by visiting Manual.
 
 Version
 =======
-2.0.0 Beta 2
-<ul>
-  <li> [Download 2.0.0 Beta .zip](https://github.com/Cliprz/cliprz/zipball/master "2.0.0 Beta 2 as zip") </li>
-  <li> [Download 2.0.0 Beta .tar](https://github.com/Cliprz/cliprz/tarball/master "2.0.0 Beta 2 as tar") </li>
-</ul>
-
+2.0.0 Beta 2,  [Donwload](https://github.com/Cliprz/cliprz/archive/master.zip "Donwload").
 
 * * *
 
@@ -39,7 +34,7 @@ Copyright
 
 Cliprz model view controller framework.
 
-Copyright &copy; 2012 - 2013 By [Yousef Ismaeil](https://www.github.com/Cliprz/ "@Cliprz"), [cliprz.org](http://wwww.cliprz.org "Cliprz official website")
+Copyright &copy; 2012 - 2013 By [Yousef Ismaeil](https://www.github.com/Cliprz/ "@Cliprz"), [cliprz.org](http://www.cliprz.org "Cliprz official website")
 
 
 
@@ -82,7 +77,8 @@ Developers
 [Albert Negix](https://github.com/Negix "Albert Negix on Github"),
 [Ali M. Al-brrak](https://github.com/alaa13212 "Ali M. Al-brrak on Github"),
 [Amer Al-rdadi](https://github.com/ameralrdadi "Amer Alrdadi on Github"),
-[Turki AL-Awlqy](https://github.com/turkialawlqy "Turki AL-Awlqy on Github").
+[Turki AL-Awlqy](https://github.com/turkialawlqy "Turki AL-Awlqy on Github"),
+[Mohammed Nasser](https://github.com/Mohammed-Nasser "Mohammed Nasser on Github").
 
 * * *
 
