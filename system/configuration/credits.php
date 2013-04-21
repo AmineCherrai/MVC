@@ -55,6 +55,18 @@ function developers ()
             'since'       => '1.1.0',
             'country'     => 'Yemen'
         ),
+        
+         'Mohammed Nasser' => array(
+            'email' => 'mtsh.egy@gmail.com',
+            'website' => NULL,
+            'twitter' => NULL,
+            'facebook' => 'http://www.facebook.com/MohammedNasser2030',
+            'googleplus' => NULL,
+            'github' => 'https://github.com/Mohammed-Nasser',
+            'description' => NULL,
+            'since' => '1.0.0',
+            'country' => 'Egypt'
+        ),
     );
 }
 
