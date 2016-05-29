@@ -6,7 +6,7 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.0.0 - Incomplete version for real use 7.
+ *  Version 1.1.0 - Stability Beta.
  *  Official website http://www.cliprz.org .
  *
  * File information :
@@ -53,6 +53,5 @@ if (!defined("IN_CLIPRZ")) die('Access Denied');
  *   [TIME_NOW]
  *   [database]
  */
-
-
+ 
 ?>

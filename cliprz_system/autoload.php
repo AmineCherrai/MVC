@@ -6,14 +6,14 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.0.0 - Incomplete version for real use 7.
+ *  Version 1.1.0 - Stability Beta.
  *  Official website http://www.cliprz.org .
  *
  * File information :
  *  File path BASE_PATH/cliprz_system/ .
  *  File name autoload.php .
  *  Created date 17/10/2012 05:06 AM.
- *  Last modification date 22/01/2013 06:36 PM.
+ *  Last modification date 08/02/2013 02:17 PM.
  *
  * Description :
  *  Autoload , Never modify this file. This file contains the constants and system files, and functions.
@@ -30,7 +30,7 @@ if (!defined("IN_CLIPRZ")) die('Access Denied');
 /**
  * @def (string) CLIPRZ - Cliprz prefix.
  */
-define("CLIPRZ","cliprz_");
+define("CLIPRZ","cliprz",true);
 
 /**
  * @def (resource) SYS_PATH - get our system files.
@@ -60,12 +60,17 @@ define('LIB_PATH',SYS_PATH.'libraries'.DS,true);
 /**
  * @def (resource) INCLUDES - get cliprz_application/includes folder.
  */
-define("INCLUDES",APP_PATH.'includes'.DS);
+define("INCLUDES",APP_PATH.'includes'.DS,true);
 
 /**
  * @def (resource) PUBLIC_PATH - get public path.
  */
-define("PUBLIC_PATH",BASE_PATH.'public'.DS);
+define("PUBLIC_PATH",BASE_PATH.'public'.DS,true);
+
+/**
+ * @def (resource) UP_PATH - get public uploads path.
+ */
+define("UP_PATH",PUBLIC_PATH.'uploads'.DS,true);
 
 /**
  * @def (boolean) display errors is false, true for Devs.
@@ -74,38 +79,41 @@ define("C_DEVELOPMENT_ENVIRONMENT",true);
 
 // MVC system constans
 
-// Model
-define('model','model',true);
-
-// View
+// View object
 define('view','view',true);
 
-// Controller
-// define('controller','controller',true); // removed by Yousef Ismaeil 25/11/2012 03:18 PM
-
-// Router
+// Router object
 define('router','router',true);
 
-// errors
+// errors object
 define("error","error",true);
 
-// security
+// security object
 define("security","security",true);
 
-// sessions
+// sessions object
 define("session","session",true);
 
-// css
+// css object
 define("css","css",true);
 
-// language
+// language object
 define("language","language",true);
 
-// config
+// config object
 define("config","config",true);
 
-// http
+// http object
 define("http","http",true);
+
+// javascript object
+define("javascript","javascript",true);
+
+// templates engine object
+define("tpl","templates_engine",true);
+
+// cliprz admin panel object
+define("cap","capanel",true);
 
 $_config = array();
 
@@ -116,17 +124,6 @@ if (file_exists(APP_PATH.'config'.DS.'config.php'))
 else
 
     exit(APP_PATH.'config'.DS.'config.php not found.');
-
-// ‪‪add HTML for librareis
-// علي محمد آل براك ‪23/1/2013 9:56 PM
-if (file_exists(SYS_PATH.'html'.DS.'html.php'))
-
-    require_once (SYS_PATH.'html'.DS.'html.php');
-
-else
-
-    exit(SYS_PATH.'html'.DS.'html.php not found.');
-
 
 // Database constants.
 if (is_bool($_config['db']['use_database']) && $_config['db']['use_database'] == true)
@@ -147,6 +144,9 @@ if (is_bool($_config['db']['use_database']) && $_config['db']['use_database'] ==
     define("C_DATABASE_PREFIX",$_config['db']['prefix'],true);
 }
 
+// Include flags
+require_once SYS_PATH.'flags/flags.php';
+
 // call our functions. __autoload
 require_once FUNCTIONS.'error_handling.functions.php';
 require_once FUNCTIONS.'magic_quotes.functions.php';
@@ -163,14 +163,17 @@ require_once FUNCTIONS.'validate_filters.functions.php';
 require_once FUNCTIONS.'url.functions.php';
 require_once FUNCTIONS.'php_options.functions.php';
 require_once FUNCTIONS.'cliprz.functions.php';
+require_once FUNCTIONS.'html.functions.php'; // Add By : علي محمد آل براك
 
 /**
  * @def (string) C_URL - Get website url.
  */
 define("C_URL",c_url(),true);
 
-// Include Cliprz Flags
-require_once SYS_PATH."flags/flags.php";
+/**
+ * @def (string) C_CHARSET - Get website charset.
+ */
+define("C_CHARSET",c_charset(),true);
 
 // call core calss.
 if (file_exists(SYS_PATH.'cliprz'.DS.'cliprz.php'))
@@ -195,8 +198,6 @@ if ($_config['db']['use_database'] == true)
     cliprz::system_use(database.'s',database);
 }
 
-cliprz::system_use(model.'s',model);
-
 if (file_exists(APP_PATH.'config'.DS.'constants.php'))
 
     require_once APP_PATH.'config'.DS.'constants.php';
@@ -208,13 +209,25 @@ if (file_exists(APP_PATH.'config'.DS.'wakeup.php'))
 
 cliprz::system_use(session.'s',session);
 
+// Get mime types arrays
+if (file_exists(APP_PATH.'conifg'.DS.'mime_types.php'))
+{
+    include APP_PATH.'conifg'.DS.'mime_types.php';
+}
+
 if (file_exists(APP_PATH."config".DS."libraries.php"))
 
     require_once APP_PATH."config".DS."libraries.php";
 
+// Call templates engine object
+cliprz::system_use(view.'s',tpl);
+
+// Call views object
 cliprz::system_use(view.'s',view);
 
 cliprz::system_use(css,css);
+
+cliprz::system_use(javascript,javascript);
 
 cliprz::system_use(router,'uri');
 
@@ -222,13 +235,29 @@ cliprz::system_use(router,router);
 
 cliprz::system_use(http,http);
 
-// get user constants file;
+
 if (file_exists(APP_PATH.'config'.DS.'router.php'))
 
 	require_once APP_PATH.'config'.DS.'router.php';
 
+
+// Call Cliprz admin panel if enabled.
+if ($_config['cap']['enabled'] === true)
+{
+    cliprz::system_use(cap,cap);
+
+    if (file_exists(APP_PATH.'config'.DS.'cap_router.php'))
+    {
+    	require_once APP_PATH.'config'.DS.'cap_router.php';
+    }
+}
+
+
 require_once FUNCTIONS.'system.functions.php';
 
 cliprz::system(router)->handler();
+
+// Useing execute class.
+cliprz::system_use('console','execute');
 
 ?>

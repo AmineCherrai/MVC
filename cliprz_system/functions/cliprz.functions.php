@@ -6,14 +6,14 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.0.0 - Incomplete version for real use 7.
+ *  Version 1.1.0 - Stability Beta.
  *  Official website http://www.cliprz.org .
  *
  * File information :
  *  File path BASE_PATH/cliprz_system/functions/ .
  *  File name cliprz.functions.php .
  *  Created date 30/10/2012 06:52 AM.
- *  Last modification date 21/01/2013 12:01 AM.
+ *  Last modification date 04/02/2013 07:30 PM.
  *
  * Description :
  *  cliprz functions.
@@ -32,11 +32,37 @@ if (!function_exists("c_trim_path"))
     /**
      * Remove slashes from beginning and ending of path.
      *
-     * @param (string) $path - Site path.
+     * @param (string) $path - Path.
      */
     function c_trim_path ($path)
     {
         return trim($path,DS);
+    }
+}
+
+if (!function_exists('c_rtrim_path'))
+{
+    /**
+     * Remove right slashe from path.
+     *
+     * @param (string) $path - Site Path.
+     */
+    function c_rtrim_path ($path)
+    {
+        return rtrim($path,DS);
+    }
+}
+
+if (!function_exists('c_lrtrim_path'))
+{
+    /**
+     * Remove left slashe from path.
+     *
+     * @param (string) $path - Site Path.
+     */
+    function c_ltrim_path ($path)
+    {
+        return ltrim($path,DS);
     }
 }
 
@@ -50,7 +76,7 @@ if (!function_exists("c_url"))
     function c_url ($path='')
     {
         global $_config;
-        return c_trim_path($_config['output']['url']).DS.$path;
+        return c_rtrim_path($_config['output']['url']).DS.$path;
     }
 }
 
@@ -76,6 +102,19 @@ if (!function_exists('c_charset'))
     {
         global $_config;
         return $_config['output']['charset'];
+    }
+}
+
+if (!function_exists('c_remove_base_path'))
+{
+    /**
+     * Remove BASE_PATH constant from chosen path.
+     *
+     * @param (string) $path - path.
+     */
+    function c_remove_base_path($path)
+    {
+        return str_ireplace(BASE_PATH,"",$path);
     }
 }
 

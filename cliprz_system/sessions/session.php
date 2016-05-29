@@ -6,14 +6,14 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.0.0 - Incomplete version for real use 7.
+ *  Version 1.1.0 - Stability Beta.
  *  Official website http://www.cliprz.org .
  *
  * File information :
  *  File path BASE_PATH/cliprz_system/sessions/ .
  *  File name session.php .
  *  Created date 01/12/2012 01:02 PM.
- *  Last modification date 16/01/2013 06:30 AM.
+ *  Last modification date 02/02/2013 05:50 PM.
  *
  * Description :
  *  Sessions class.
@@ -65,11 +65,8 @@ class cliprz_session
         // gc_divisor
         self::session_gc_configuration("gc_divisor");
 
-        // gc_maxlifetime
-        self::session_gc_configuration("gc_maxlifetime");
-
-        // session_start();
-
+        self::handler();
+        self::hijacking();
     }
 
     /**
@@ -91,21 +88,82 @@ class cliprz_session
     }
 
     /**
-     * checking for session ID's if true with numbers and characters.
+     * Handling sessions.
      *
-     * @param (string) session id.
-     * @access public.
+     * @access protected.
      */
-    public static function check_session($id)
+    protected static function handler ()
     {
-    	if (preg_match("/^[0-9a-z]+$/", $id))
+        global $_config;
+
+        if ($_config['session']['use_handler'] === true)
         {
-    		return $id;
-    	}
+            if (is_string($_config['session']['handler_type'])
+            && $_config['session']['handler_type'] == 'files')
+            {
+                cliprz::system_use(session.'s',session.'_handler_files');
+            }
+            else if (is_string($_config['session']['handler_type'])
+            && $_config['session']['handler_type'] == 'database')
+            {
+                // Get driver name
+                $driver_name = strtolower($_config['db']['driver']);
+
+                // Get session driver path
+                $session_driver_path = 'databases'.DS.'drivers'.DS.$driver_name.DS;
+
+                // Session object name.
+                $session_object = $driver_name.'_session_handler';
+
+                // Get full session handler path from cliprz_system/databases/drivers/{drivername}/drivername_session_handler.php
+                $full_session_handler_path = SYS_PATH.$session_driver_path.$session_object.'.php';
+
+                // Check if this driver have a session handler
+                if (file_exists($full_session_handler_path))
+                {
+                    cliprz::system_use($session_driver_path,$session_object);
+                }
+                else // Or show error
+                {
+                    trigger_error(
+                        $driver_name
+                        .' Does not have a session handler.
+                        the solution is replace $_config[\'session\'][\'handler_type\'] from database to files.'
+                        ,E_WARNING);
+                }
+            }
+            else
+            {
+                trigger_error(
+                    "Sessions handler error,
+                    Handler type must be files or database or you can close session handler",
+                    E_WARNING);
+            }
+        }
         else
         {
-    		return "";
-    	}
+            session_start();
+        }
+    }
+
+    /**
+     * Protected Sessions from Hijacking.
+     *
+     * @access protected.
+     */
+    protected static function hijacking ()
+    {
+        if (!c_is_session('hijacking_user_ip'))
+        {
+            c_set_session('hijacking_user_ip',c_get_ip());
+        }
+        else
+        {
+            if (c_get_session('hijacking_user_ip') != c_get_ip())
+            {
+                c_session_destroy (false);
+            }
+        }
     }
 
 }

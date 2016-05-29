@@ -1,0 +1,29 @@
+    /**
+     * Show {tablename} data.
+     *
+     * @access public.
+     */
+    public function show ($page=null)
+    {
+
+        // Set options for pagination.
+        cliprz::library('pagination')->set(cliprz::system(cap)->get_info('name')."/{tablename}/show","{tablename}",$page,10,1);
+
+        $query = cliprz::system(database)->select("{tablename}","*","","",cliprz::library('pagination')->limit());
+
+        $data = array(
+            'query'      => $query,
+            'pagination' => cliprz::library('pagination')->display(array('first' => true,'last' => true))
+        );
+
+        // Set a {tablename} document title.
+        cliprz::system(cap)->set_title("Show {tablename} results");
+        // Show header page.
+        cliprz::system(cap)->display('header','capanel');
+        // Show add form.
+        cliprz::system(cap)->display('show','{tablename}',$data);
+        // Show footer.
+        cliprz::system(cap)->display('footer','capanel');
+
+    }
+

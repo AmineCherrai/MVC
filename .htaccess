@@ -4,14 +4,14 @@
  #  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  #
  # Framework information :
- #  Version 1.0.0 - Incomplete version for real use 7.
+ #  Version 1.1.0 - Stability Beta.
  #  Official website http://www.cliprz.org .
  #
  # File information :
  #  File path BASE_PATH/ .
  #  File name .htaccess .
  #  Created date 09/11/2012 05:32 PM.
- #  Last modification date 17/01/2013 12:20 AM.
+ #  Last modification date 12/02/2013 10:49 AM.
  #
  # Description :
  #  .htaccess
@@ -35,7 +35,7 @@ deny from all
  # If you get 'No input file specified'. message or you have problems with FastCGI.
  # Remove (#) from beginning Options +ExecCGI.
  ##
-#Options +ExecCGI
+Options +ExecCGI
 
 ##
  # It is very easy for anyone to view your Apache versions and other installed critical software on your server,
@@ -95,3 +95,28 @@ RewriteRule .* index.php?/$0 [PT,L,QSA]
  # Cookies and sessions path
  ##
 #php_value session.cookie_domain .YourWebsiteURL.com
+
+##
+ # If Apache is compiled with built in mod_deflade/GZIP support
+ # then GZIP Javascript, CSS, HTML and XML so they're sent to
+ # the client faster.
+ ##
+<IfModule mod_deflate.c>
+	AddOutputFilterByType DEFLATE application/javascript text/css text/html text/xml
+</IfModule>
+
+##
+ # mod_gzip is an external extension module for Apache that allows you to quickly and easily compress your files before you send them to the client.
+ # This speeds up your site like crazy!
+ # If your hosting provider has mod_gzip module enabled start GZIP.
+ ##
+<ifModule mod_gzip.c>
+  mod_gzip_on Yes
+  mod_gzip_dechunk Yes
+  mod_gzip_item_include file \.(html?|txt|css|js|php|pl)$
+  mod_gzip_item_include handler ^cgi-script$
+  mod_gzip_item_include mime ^text/.*
+  mod_gzip_item_include mime ^application/x-javascript.*
+  mod_gzip_item_exclude mime ^image/.*
+  mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*
+</ifModule>

@@ -6,7 +6,7 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.0.0 - Incomplete version for real use 7.
+ *  Version 1.1.0 - Stability Beta.
  *  Official website http://www.cliprz.org .
  *
  * File information :
@@ -41,7 +41,7 @@ cliprz::system(router)->rule(array(
 	"function" => "index",
 	"method"   => "GET"
 ));
- 
+
 cliprz::system(router)->rule(array(
 	"regex"    => "cliprzinfo",
 	"class"    => "home",
@@ -49,4 +49,5 @@ cliprz::system(router)->rule(array(
 	"method"   => "GET"
 ));
  
+
 ?>

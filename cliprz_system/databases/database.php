@@ -6,14 +6,14 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.0.0 - Incomplete version for real use 7.
+ *  Version 1.1.0 - Stability Beta.
  *  Official website http://www.cliprz.org .
  *
  * File information :
  *  File path BASE_PATH/cliprz_system/databases/ .
  *  File name database.php .
  *  Created date 06/01/2013 01:52 PM.
- *  Last modification date 06/01/2013 06:52 PM.
+ *  Last modification date 10/02/2013 11:42 AM.
  *
  * Description :
  *  Database abstract class.
@@ -27,42 +27,60 @@
 
 if (!defined("IN_CLIPRZ")) die('Access Denied');
 
+c_call_exception(database,database.'s');
+
 class cliprz_database
 {
 
     /**
-     * @var (array) $_connection - Connection values.
+     * @var (object) $driver - Driver object.
      * @access protected.
      */
-    protected static $_connection;
+    protected static $driver;
 
     /**
-     * @var (array) $_driver - Driver object.
-     * @access protected.
-     */
-    protected static $_driver;
-
-    /**
-     * @var (string) $prefix - Database prefix.
-     * @access protected.
-     */
-    protected static $prefix;
-
-    /**
-     * @var (resource) $link_identifier - Driver connection link identifier.
+     * @var (resoucrc) $link_identifier - A connection link identifier.
      * @access protected.
      */
     #protected static $link_identifier;
 
     /**
-     * Database Construct
+     * Database constructor.
      *
      * @access public.
      */
     public function __construct()
     {
         self::load_driver();
-        self::$_connection = self::link_identifier();
+
+        try
+        {
+            // Checl if object is exists
+            if (!is_object(self::$driver))
+            {
+                throw new database_exception("Driver object not exists.");
+            }
+            else // Start connections to driver and database
+            {
+                // Connect to database.
+                self::connect();
+
+                // Pings a server connection, or tries to reconnect if the connection has gone down.
+                self::ping();
+
+                // Select a database.
+                self::select_db();
+
+                // Sets the default client character set.
+                self::set_charset();
+                self::character_set_name();
+            }
+        }
+        catch (database_exception $e)
+        {
+            c_log_error($e,'WARNING');
+        }
+
     }
 
     /**
@@ -74,304 +92,552 @@ class cliprz_database
     {
         global $_config;
 
-        $define = strtoupper(CLIPRZ)."DATABASE_DRIVER_".strtoupper($_config['db']['driver'])."_INCLUDED";
+        // Get driver name
+        $driver_name = strtolower($_config['db']['driver']);
 
-        if (!defined($define))
+        // Get driver path
+        $driver_path = SYS_PATH.database.'s'.DS.'drivers'.DS.$driver_name.DS.$driver_name.'.php';
+
+        try
         {
-            $driver_path = SYS_PATH."databases".DS."drivers".DS
-                .$_config['db']['driver'].DS.$_config['db']['driver'].".php";
-
+            // Check if driver exists
             if (file_exists($driver_path))
             {
-                require_once ($driver_path);
+                // Call driver
+                include $driver_path;
 
-                $driver_class_name = (string) CLIPRZ."database_driver_".$_config['db']['driver'];
+                // Get driver define.
+                $driver_define = strtoupper(CLIPRZ.'_DATABASE_DRIVER_'.$_config['db']['driver'].'_INCLUDED');
 
-                if (class_exists($driver_class_name))
+                // Check if is defined CLIPRZ_DATABASE_DRIVER_NAME_INCLUDED.
+                if (defined($driver_define))
                 {
-                    self::$_driver = new $driver_class_name();
-                    self::connect();
-                    self::select_db();
-                    self::set_charset();
+                    // Get driver object name.
+                    $driver_object = (string) strtolower(CLIPRZ.'_database_driver_'.$driver_name);
+
+                    // Check if driver class is exists
+                    if (class_exists($driver_object))
+                    {
+                        // Create new object.
+                        self::$driver = new $driver_object();
+                    }
+                    else
+                    {
+                        throw new database_exception($driver_object.' class not exists.');
+                    }
                 }
                 else
                 {
-                    trigger_error($driver_class_name." class not exists.");
+                    throw new database_exception($driver_define.' not defined.');
                 }
             }
             else
             {
-                trigger_error($_config['db']['driver']." not exists");
+                throw new database_exception($_config['db']['driver'].' driver not exists.');
             }
         }
-        else
+        catch (database_exception $e)
         {
-            trigger_error($define." not defined.");
+            c_log_error($e,'WARNING');
         }
     }
 
+    /********************************************************************/
+    /****************************** Driver ******************************/
+    /********************************************************************/
+
     /**
-     * Start Connection to database driver.
+     * Start connection to database.
      *
      * @access protected.
      */
     protected static function connect ()
     {
-        return self::$_driver->connect();
+        return self::$driver->connect();
     }
 
     /**
-     * Start select a database name.
+     * Pings a server connection, or tries to reconnect if the connection has gone down.
+     *
+     * @access public.
+     */
+    public static function ping ()
+    {
+        return self::$driver->ping();
+    }
+
+    /**
+     * Selects the default database for database queries.
      *
      * @access protected.
      */
     protected static function select_db ()
     {
-        return self::$_driver->select_db();
+        return self::$driver->select_db();
     }
 
     /**
-     * Set database charset.
+     * Sets the default client character set.
      *
      * @access protected.
      */
     protected static function set_charset ()
     {
-        return self::$_driver->set_charset();
+        return self::$driver->set_charset();
     }
 
     /**
-     * Close Connection to database driver.
-     *
-     * @access public.
-     */
-    public static function close ()
-    {
-        return self::$_driver->close();
-    }
-
-    /**
-     * Connection link identifier.
+     * Returns the default character set for the database connection.
      *
      * @access protected.
      */
-    protected static function link_identifier ()
+    protected static function character_set_name ()
     {
-        return self::$_driver->link_identifier();
+        return self::$driver->character_set_name();
     }
 
     /**
-     * Database prefix.
+     * Get connection link identifier.
      *
      * @access public.
      */
-    public static function prefix ()
+    public static function link ()
     {
-        return self::$_driver->prefix();
+        return self::$driver->link_identifier();
     }
 
     /**
-     * Get database version.
+     * Performs a query on the database.
+     *
+     * @param (string) $query - The query string.
+     * @access public.
+     */
+    public static function query ($query)
+    {
+        return self::$driver->query($query);
+    }
+
+    /**
+     * Escapes special characters in a string for use in an SQL statement. (Real escape string).
+     *
+     * @param (string) $escapestr - The string to be escaped.
+     * @access public.
+     */
+    public static function res($escapestr)
+    {
+        return self::$driver->res($escapestr);
+    }
+
+    /**
+     * Gets the number of affected rows in a previous SQL operation.
+     *
+     * @access public.
+     */
+    public static function affected_rows ()
+    {
+        return self::$driver->affected_rows();
+    }
+
+    /**
+     * Returns the auto generated id used in the last query.
+     *
+     * @access public.
+     */
+    public static function insert_id ()
+    {
+        return self::$driver->insert_id();
+    }
+
+    /**
+     * Returns a string description of the last error.
+     *
+     * @access public.
+     */
+    public static function error ()
+    {
+        return self::$driver->error();
+    }
+
+    /**
+     * Returns the error code for the most recent function call.
+     *
+     * @access public.
+     */
+    public static function errno ()
+    {
+        return self::$driver->errno();
+    }
+
+    /**
+     * Returns a string description of the last connect error.
+     *
+     * @access public.
+     */
+    public static function connect_error ()
+    {
+        return self::$driver->connect_error();
+    }
+
+    /**
+     * Returns the error code from last connect call.
+     *
+     * @access public.
+     */
+    public static function connect_errno ()
+    {
+        return self::$driver->connect_errno();
+    }
+
+    /**
+     * Get driver Version number.
      *
      * @access public.
      */
     public static function version ()
     {
-        return self::$_driver->version();
+        return self::$driver->version();
     }
 
     /**
-     * Send a SQL query.
+     * Get driver Platform.
      *
-     * @param (string) $sql - SQL query.
      * @access public.
      */
-    public static function query ($sql)
+    public static function platform ()
     {
-        return self::$_driver->query($sql);
+        return self::$driver->platform();
     }
 
     /**
-     * Selection from the database driver tables.
+     * Closes a previously opened database connection.
      *
-     * @param (string) $table - table name in database.
-     * @param (string) $fields - fields name.
-     * @param (string) $where - where SQL.
-     * @param (string) $orderby - ORDER BY SQL.
-     * @param (string) $limit - LIMIT SQL.
      * @access public.
      */
-    public static function select($table,$fields='*',$where='',$orderby='',$limit='')
+    public static function close ()
     {
-        return self::$_driver->select($table,$fields,$where,$orderby,$limit);
+        return self::$driver->close();
     }
 
     /**
-     * Insert data into database driver.
+     * Selection from the database tables.
      *
-     * @param (string) $table - table name in database.
-     * @param (array) $array - post variables with Keys.
+     * @param (string) $table   - Table name.
+     * @param (string) $fields  - Fields names.
+     * @param (string) $where   - Where SQL.
+     * @param (string) $orderby - Order By SQL.
+     * @param (string) $limit   - Limit SQL.
      * @access public.
      */
-    public static function insert($table,$array)
+    public static function select ($table,$fields='*',$where='',$orderby='',$limit='')
     {
-        return self::$_driver->insert($table,$array);
+        return self::$driver->select($table,$fields,$where,$orderby,$limit);
     }
 
     /**
-     * Update database driver data.
+     * Insert data into database.
      *
-     * @param (string) $table - table name in database.
-     * @param (array) $array - Array with Keys.
-     * @param (string) $where -  Where $_GET.
-     * @param (string) $limit - Limit.
-     * @param (boolean) $no_quote - Quote default is false (true or false).
+     * @param (string) $table - Table name.
+     * @param (array)  $posts - posts as array with keys.
      * @access public.
      */
-    public static function update($table, $array, $where="", $limit="", $no_quote=false)
+    public static function insert ($table,$posts)
     {
-        return self::$_driver->update($table, $array, $where, $limit, $no_quote);
+        return self::$driver->insert($table,$posts);
     }
 
     /**
-     * Update data from database driver where Specific SQL requested.
+     * Update data from database.
      *
-     * @param (string) $table - table name in database.
-     * @param (string) $fields - field names.
-     * @param (string) $where - where id = $_GET['id'];.
+     * @param (string)  $table    - Table name.
+     * @param (array)   $posts    - posts as array with keys.
+     * @param (string)  $where    - Where SQL.
+     * @param (array)   $limit    - Limit SQL.
+     * @param (boolean) $no_quote - no quote.
      * @access public.
      */
-    public static function update_where($table,$fields,$where)
+    public static function update ($table, $posts, $where="", $limit="", $no_quote=false)
     {
-        return self::$_driver->update_where($table,$fields,$where);
+        return self::$driver->update($table,$posts,$where,$limit,$no_quote);
     }
 
     /**
-     * Delete data from database driver where Specific SQL requested.
+     * Update data from database where Specific SQL requested.
      *
-     * @param (string) $table - table name in database.
-     * @param (string) $field_name - field name.
-     * @param (string) $where - Where value.
+     * @param (string) $table  - Table name.
+     * @param (string) $fields - Fields names.
+     * @param (string) $where  - Where SQL.
      * @access public.
      */
-    public static function delete($table,$field_name,$where)
+    public static function update_where ($table,$fields,$where)
     {
-        return self::$_driver->delete($table,$field_name,$where);
+        return self::$driver->update_where($table,$fields,$where);
     }
 
     /**
-     * Escapes special characters in a string for use in an SQL statement.
+     * Delete data from database where Specific SQL requested.
      *
-     * @param (string) $str - The string that is to be escaped.
+     * @param (string) $table - Table name.
+     * @param (string) $where - Where SQL.
      * @access public.
      */
-    public static function real_escape_string($str)
+    public static function delete ($table,$where)
     {
-        return self::$_driver->real_escape_string($str);
-    }
-
-    /****************************************/
-    // Result methods
-    /****************************************/
-
-    /**
-     * Fetch a result row as an associative array.
-     * Returns an associative array that corresponds to the fetched row and moves the internal data pointer ahead.
-     *
-     * @param (resource) $result - result.
-     * @access public.
-     */
-    public static function fetch_assoc($result)
-    {
-        return self::$_driver->fetch_assoc($result);
+        return self::$driver->delete($table,$where);
     }
 
     /**
-     * Fetch a result row as an associative array, a numeric array, or both.
-     * Returns an array that corresponds to the fetched row and moves the internal data pointer ahead.
+     * Changes the user of the specified database connection.
      *
-     * @param (resource) $result - result.
+     * @param (string) $database_name - The new database name.
      * @access public.
      */
-    public static function fetch_array($result)
+    public static function change_user ($database_name)
     {
-        return self::$_driver->fetch_array($result);
+        return self::$driver->change_user($database_name);
+    }
+
+    /********************************************************************/
+    /****************************** Result ******************************/
+    /********************************************************************/
+
+    /**
+     * Fetch a result row as an associative, a numeric array, or both.
+     *
+     * @param (string) $result     - A result set identifier returned by query.
+     * @param (string) $resulttype - This optional parameter is a constant indicating what type of array should be produced from the current row data.
+     *  $resulttype :
+     *   'ASSOC'
+     *   'NUM'
+     *   'BOTH'
+     * @access public.
+     */
+    public static function fetch_array ($result,$resulttype='')
+    {
+        return self::$driver->fetch_array($result,$resulttype);
     }
 
     /**
-     * Fetch a result row as an object.
-     * Returns an object with properties that correspond to the fetched row and moves the internal data pointer ahead.
+     * Returns the current row of a result set as an object.
      *
-     * @param (resource) $result - result.
+     * @param (string) $result     - A result set identifier returned by query.
+     * @param (string) $class_name - The name of the class to instantiate, set the properties of and return. If not specified, a stdClass object is returned.
+     * @param (array)  $params     - An optional array of parameters to pass to the constructor for class_name objects.
      * @access public.
      */
-    public static function fetch_object($result)
+    public static function fetch_object ($result,$class_name=null,$params=null)
     {
-        return self::$_driver->fetch_object($result);
+        return self::$driver->fetch_object($result,$class_name,$params);
+    }
+
+    /**
+     * Fetch a result row as an associative array
+     *
+     * @param (string) $result - A result set identifier returned by query.
+     * @access public.
+     */
+    public static function fetch_assoc ($result)
+    {
+        return self::$driver->fetch_assoc($result);
+    }
+
+    /**
+     * Fetches all result rows as an associative array, a numeric array, or both.
+     *
+     * @param (string) $result     - A result set identifier returned by query.
+     * @param (string) $resulttype - This optional parameter is a constant indicating what type of array should be produced from the current row data.
+     *  $resulttype :
+     *   'ASSOC'
+     *   'NUM'
+     *   'BOTH'
+     * @access public.
+     */
+    public static function fetch_all ($result,$resulttype='')
+    {
+        return self::$driver->fetch_all($result,$resulttype);
+    }
+
+    /**
+     * Returns the next field in the result set.
+     *
+     * @param (string) $result - A result set identifier returned by query.
+     * @access public.
+     */
+    public static function fetch_field ($result)
+    {
+        return self::$driver->fetch_field($result);
+    }
+
+    /**
+     * Returns an array of objects representing the fields in a result set.
+     *
+     * @param (string) $result - A result set identifier returned by query.
+     * @access public.
+     */
+    public static function fetch_fields ($result)
+    {
+        return self::$driver->fetch_fields($result);
     }
 
     /**
      * Get a result row as an enumerated array.
      *
-     * @param (resource) $result - Result.
+     * @param (string) $result - A result set identifier returned by query.
      * @access public.
      */
-    public static function fetch_row($result)
+    public static function fetch_row ($result)
     {
-        return self::$_driver->fetch_row($result);
+        return self::$driver->fetch_row($result);
     }
 
     /**
-     * Free result memory.
-     * will free all memory associated with the result identifier result.
+     * Get the number of fields in a result.
      *
-     * @param (resource) $result - result.
+     * @param (string) $result - A result set identifier returned by query.
      * @access public.
      */
-    public static function free_result($result)
+    public static function num_fields ($result)
     {
-        return self::$_driver->free_result($result);
+        return self::$driver->num_fields($result);
     }
 
     /**
-     * Get number of rows in result.
+     * Frees the memory associated with a result.
      *
-     * @param (resource) $result - result.
+     * @param (string) $result - A result set identifier returned by query.
      * @access public.
      */
-    public static function num_rows($result)
+    public static function free_result ($result)
     {
-        return self::$_driver->num_rows($result);
+        return self::$driver->free_result($result);
     }
 
     /**
-     * Get number of fields in result.
+     * Returns the lengths of the columns of the current row in the result set.
      *
-     * @param (resource) $result - result.
+     * @param (string) $result - A result set identifier returned by query.
      * @access public.
      */
-    public static function num_fields($result)
+    public static function fetch_lengths ($result)
     {
-        return self::$_driver->num_fields($result);
+        return self::$driver->fetch_lengths($result);
     }
 
     /**
-     * Get number of affected rows in previous database driver operation.
+     * Gets the number of rows in a result.
+     *
+     * @param (string) $result - A result set identifier returned by query.
+     * @access public.
+     */
+    public static function num_rows ($result)
+    {
+        return self::$driver->num_rows($result);
+    }
+
+    /*******************************************************************/
+    /****************************** Forge ******************************/
+    /*******************************************************************/
+
+    /**
+     * Create a new database.
+     *
+     * @param (string) $database_name - Database name.
+     * @access public.
+     */
+    public static function create_database ($database_name)
+    {
+        return self::$driver->create_database($database_name);
+    }
+
+    /**
+     * Drop a database.
+     *
+     * @param (string) $database_name - Database name.
+     * @access public.
+     */
+    public static function drop_database ($database_name)
+    {
+        return self::$driver->drop_database($database_name);
+    }
+
+    /**
+     * Create a new table.
+     *
+     * @param (string) $table_name - Table name without prefix.
+     * @access public.
+     */
+    public static function create_table ($table_name)
+    {
+        return self::$driver->create_table($table_name);
+    }
+
+    /**
+     * Drop a table.
+     *
+     * @param (string) $table_name - Table name  without prefix.
+     * @access public.
+     */
+    public static function drop_table ($table_name)
+    {
+        return self::$driver->drop_table($table_name);
+    }
+
+    /**
+     * Rename table.
+     *
+     * @param (string) $old_table_name - Old table name, Note without prefix.
+     * @param (string) $new_table_name - New table name, Note without prefix.
+     * @access public.
+     */
+    public static function rename_table ($old_table_name,$new_table_name)
+    {
+        return self::$driver->rename_table($old_table_name,$new_table_name);
+    }
+
+    /*********************************************************************/
+    /****************************** utility ******************************/
+    /*********************************************************************/
+
+    /**
+     * Get all databases list.
      *
      * @access public.
      */
-    public static function affected_rows()
+    public static function list_databases ()
     {
-        return self::$_driver->affected_rows();
+        return self::$driver->list_databases();
     }
 
-    /****************************************/
-    // Forge methods
-    /****************************************/
+    /**
+     * Optimize table.
+     *
+     * @param (string) $table_name - Table name without prefix.
+     * @access public.
+     */
+    public static function optimize_table ($table_name)
+    {
+        return self::$driver->optimize_table($table_name);
+    }
 
-    /****************************************/
-    // Utility methods
-    /****************************************/
+    /**
+     * Repair table.
+     *
+     * @param (string) $table_name - Table name without prefix.
+     * @access public.
+     */
+    public static function repair_table ($table_name)
+    {
+        return self::$driver->repair_table($table_name);
+    }
+
+    /**
+     * Get database backup.
+     *
+     * @access public.
+     */
+    public static function backup ()
+    {
+        return self::$driver->backup();
+    }
 
 }
 

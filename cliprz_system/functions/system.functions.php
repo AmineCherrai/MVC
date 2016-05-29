@@ -6,14 +6,14 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.0.0 - Incomplete version for real use 7.
+ *  Version 1.1.0 - Stability Beta.
  *  Official website http://www.cliprz.org .
  *
  * File information :
  *  File path BASE_PATH/cliprz_system/functions/ .
  *  File name system.functions.php .
  *  Created date 16/12/2012 06:59 PM.
- *  Last modification date 21/01/2013 05:08 PM.
+ *  Last modification date 27/01/2013 09:45 PM.
  *
  * Description :
  *  Our System functions.
@@ -37,7 +37,7 @@ if (!function_exists('c_style'))
      */
     function c_style ($filename,$compress=false)
     {
-        echo cliprz::system(css)->style($filename,$compress);
+        return cliprz::system(css)->style($filename,$compress);
     }
 }
 
@@ -51,6 +51,19 @@ if (!function_exists('c_image'))
     function c_image ($imagename)
     {
         return cliprz::system(view)->image($imagename);
+    }
+}
+
+if (!function_exists('c_javascript'))
+{
+    /**
+     * Load a javascript file from public/javascript/ directory
+     *
+     * @param (string) $filename - file name.
+     */
+    function c_javascript ($filename)
+    {
+        return cliprz::system(javascript)->src($filename);
     }
 }
 

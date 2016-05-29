@@ -1,0 +1,20 @@
+<div><a class="new" href="<?php echo cliprz::system(cap)->url('{tablename}/add'); ?>"><img src="<?php echo cliprz::system(cap)->get_image('new.png'); ?>" alt="Add" />&nbsp;New</a></div>
+<div class="br">&nbsp;</div>
+<table>
+<thead>
+    <tr>
+        <td colspan="{colspan}">{filtertablename}</td>
+    </tr>
+</thead>
+<tbody>
+<tr class="tbl1">
+    <td>{filterprimarykey}</td>
+    <td>{filterstartingrow}</td>
+    <td>Options</td>
+</tr>
+<?php
+if (cliprz::system(database)->num_rows($query))
+{
+while ($row = cliprz::system(database)->fetch_assoc($query))
+{
+?>

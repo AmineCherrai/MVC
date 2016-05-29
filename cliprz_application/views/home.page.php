@@ -1,10 +1,11 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<meta charset="UTF-8" />
+<meta charset="<?php echo C_CHARSET; ?>" />
 <title>Cliprz</title>
-<link rel="icon" type="image/png" href="<?php c_image('favicon.png') ;?>" /> 
-<link rel="stylesheet" href="<?php c_style("styles.css",false); ?>" type="text/css" />
+<link rel="icon" type="image/png" href="<?php echo c_image('favicon.png') ;?>" />
+<link rel="stylesheet" href="<?php echo c_style("styles.css",false); ?>" type="text/css" />
+<script type="text/javascript" src="<?php echo c_javascript("jquery.js"); ?>"></script>
 </head>
 <body>
 
@@ -65,7 +66,7 @@ If you want to use a database edit connections values from
 highlight_string('<?php
 
 $_config[\'db\'][\'host\']      = "localhost";
-$_config[\'db\'][\'user\']      = "";
+$_config[\'db\'][\'user\']      = "root";
 $_config[\'db\'][\'pass\']      = "";
 $_config[\'db\'][\'name\']      = "";
 $_config[\'db\'][\'prefix\']    = "";
@@ -73,7 +74,8 @@ $_config[\'db\'][\'charset\']   = "utf8";
 $_config[\'db\'][\'collation\'] = "utf8_unicode_ci";
 $_config[\'db\'][\'port\']      = null; // By default port is 3306
 $_config[\'db\'][\'socket\']    = null;
-$_config[\'db\'][\'pconnect\']  = false; // use in MySQL Only.
+$_config[\'db\'][\'pconnect\']  = false; // use in MySQLi, SQLite Only.
+$_config[\'db\'][\'options\']   = array();
 
 ?>');
 ?>

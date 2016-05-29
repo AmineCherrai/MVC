@@ -6,14 +6,14 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.0.0 - Incomplete version for real use 7.
+ *  Version 1.1.0 - Stability Beta.
  *  Official website http://www.cliprz.org .
  *
  * File information :
  *  File path BASE_PATH/cliprz_system/languages/ .
  *  File name language.php .
  *  Created date 20/12/2012 06:24 PM.
- *  Last modification date 20/01/2013 02:45 AM.
+ *  Last modification date 10/02/2013 11:49 AM.
  *
  * Description :
  *  Languages class.
@@ -26,6 +26,8 @@
  */
 
 if (!defined("IN_CLIPRZ")) die('Access Denied');
+
+c_call_exception('language','languages');
 
 $_lang   = array();
 
@@ -53,7 +55,14 @@ class cliprz_language
     {
         global $_config;
 
-        self::load_language($_config['language']['name']);
+        try
+        {
+            self::load_language($_config['language']['name']);
+        }
+        catch (language_exception $e)
+        {
+            c_log_error($e);
+        }
 
     }
 
@@ -82,7 +91,7 @@ class cliprz_language
             }
             else
             {
-                trigger_error($language_name." file not exists.");
+                throw new language_exception($language_name." file not exists.");
             }
 
             // Load all languages files in this folder.
@@ -112,7 +121,7 @@ class cliprz_language
                 }
                 else
                 {
-                    trigger_error($language_name." file not exists.");
+                    throw new language_exception($language_name." file not exists.");
                 }
 
                 // Load all languages files in this folder.
@@ -127,8 +136,7 @@ class cliprz_language
             }
             else
             {
-                trigger_error("language packages not exists.");
-                exit();
+                throw new language_exception("language packages not exists.",'WARNING');
             }
 
         }
@@ -168,7 +176,22 @@ class cliprz_language
     public static function lang ($key)
     {
         global $_lang;
-        return $_lang[$key];
+
+        try
+        {
+            if (isset($_lang[$key]))
+            {
+                return $_lang[$key];
+            }
+            else
+            {
+                throw new language_exception('Undefined ['.$key.'] key in $_lang array.');
+            }
+        }
+        catch (language_exception $e)
+        {
+            c_log_error($e);
+        }
     }
 
 }

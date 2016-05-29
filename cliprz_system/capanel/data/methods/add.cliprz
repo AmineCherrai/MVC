@@ -1,0 +1,61 @@
+    /**
+     * Add a new data for {tablename}.
+     *
+     * @access public.
+     */
+    public function add ()
+    {
+        // Hide display pages.
+        $hide   = false;
+        // Set your errors.
+        $errors = false;
+
+        // Check if isset POST that named add and value is new.
+        if (isset($_POST['add']) && $_POST['add'] == 'new')
+        {
+            // {tablename} Posts variables.
+            $add_posts = $this->{tablename}_posts();
+
+            // Note check your posts before inserting to database.
+
+            // Insert data to database
+            cliprz::system(database)->insert("{tablename}",$add_posts);
+
+            // Now if insert data is done hide display pages.
+            $hide = true;
+
+            // If not errors return errors to false.
+            $errors = false;
+
+            // Unset Posts.
+            unset($add_posts);
+
+            // If insert is done display a success message.
+            cliprz::system(cap)->success(array(
+                'title'   => 'Redirecting', // Redirecting title.
+                'message' => 'Data was inserted successfully.', // Redirecting message
+                'page'    => '{tablename}/show', // Redirecting URL page
+                'time'    => 3 // Redirecting refresh time, 3 Minutes by default.
+            ));
+
+        }
+
+        $data = array(
+            'errors' => $errors
+        );
+
+        // If hide value is false and boolean try to hide display pages.
+        if ($hide === false)
+        {
+            // Set a {tablename} document title.
+            cliprz::system(cap)->set_title("Add {tablename} form");
+            // Show header page.
+            cliprz::system(cap)->display('header','capanel');
+            // Show add form.
+            cliprz::system(cap)->display('add','{tablename}',$data);
+            // Show footer.
+            cliprz::system(cap)->display('footer','capanel');
+        }
+
+    }
+

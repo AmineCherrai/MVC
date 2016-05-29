@@ -1,0 +1,4 @@
+<tr class="tbl{tbl}">
+    <td>{filterrowname}</td>
+    <td><input class="text-big" type="text" name="{rowname}" value="<?php echo (isset($_POST['{rowname}'])) ? c_stripslashes(c_htmlentities($_POST['{rowname}'])) : c_stripslashes(c_htmlentities($row['{rowname}'])); ?>" /></td>
+</tr>

@@ -6,14 +6,14 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.0.0 - Incomplete version for real use 7.
+ *  Version 1.1.0 - Stability Beta.
  *  Official website http://www.cliprz.org .
  *
  * File information :
  *  File path BASE_PATH/cliprz_system/databases/drivers/mysqli/.
  *  File name mysqli.php .
  *  Created date 06/01/2013 02:29 PM.
- *  Last modification date 06/01/2013 06:52 PM.
+ *  Last modification date 10/02/2013 05:45 AM.
  *
  * Description :
  *  Mysqli database class.
@@ -33,17 +33,17 @@ class cliprz_database_driver_mysqli
 {
 
     /**
-     * @var (resource) $connection - The MySQL connection link.
+     * @var (resource) $link_identifier - The database connection link.
      * @access protected.
      */
-    protected $connection;
+    protected $link_identifier;
 
-    /****************************************/
-    // Driver methods
-    /****************************************/
+    /********************************************************************/
+    /****************************** Driver ******************************/
+    /********************************************************************/
 
     /**
-     * Opens or reuses a connection to a MySQL server and select a MySQL database.
+     * Start connection to database.
      *
      * @access public.
      */
@@ -51,22 +51,35 @@ class cliprz_database_driver_mysqli
     {
         global $_config;
 
-        if (is_null($_config['db']['port']))
+        // Check if $_config['db']['port'] is null.
+        if ($_config['db']['port'] === null)
         {
-            $this->connection = @mysqli_connect($_config['db']['host'],$_config['db']['user'],
-                $_config['db']['pass']);
+            $this->link_identifier = @mysqli_connect($_config['db']['host'],$_config['db']['user'],$_config['db']['pass']);
         }
-        else
+        else // add $_config['db']['port'] in connections
         {
-            $this->connection = @mysqli_connect($_config['db']['host'],$_config['db']['user'],
-                $_config['db']['pass'],$_config['db']['port']);
+            $this->link_identifier = @mysqli_connect($_config['db']['host'],$_config['db']['user'],$_config['db']['pass'],$_config['db']['port']);
         }
 
-        if (!$this->connection)
+        // Check connections
+        if (!$this->link_identifier)
         {
             cliprz::system(error)->database(array(
                 "title"   => "MySQL error",
-                "content" => "Could not connect to the database."));
+                "content" => $this->connect_error()));
+        }
+    }
+
+    /**
+     * Pings a server connection, or tries to reconnect if the connection has gone down.
+     *
+     * @access public.
+     */
+    public function ping ()
+    {
+        if (mysqli_ping($this->link_identifier) === false)
+        {
+            $this->link_identifier = false;
         }
     }
 
@@ -78,113 +91,188 @@ class cliprz_database_driver_mysqli
     public function select_db ()
     {
         global $_config;
-
-        $select_database = @mysqli_select_db($this->connection,$_config['db']['name']);
-
-        if (!$select_database)
-        {
-            cliprz::system(error)->database(array(
-                "title"   => "MySQL error",
-                "content" => $_config['db']['name']." not exists in database."));
-        }
+        mysqli_select_db($this->link_identifier,$_config['db']['name']);
     }
 
     /**
-     * Sets the default character set for the current connection.
+     * Sets the default client character set.
      *
-     * @access protected.
+     * @access public.
      */
     public function set_charset ()
     {
         global $_config;
+        mysqli_set_charset($this->link_identifier,$_config['db']['charset']);
+    }
 
-        if(function_exists('mysqli_set_charset'))
+    /**
+     * Returns the default character set for the database connection.
+     *
+     * @access public.
+     */
+    public function character_set_name ()
+    {
+        return true;
+    }
+
+    /**
+     * Get connection link identifier.
+     *
+     * @access public.
+     */
+    public function link ()
+    {
+        return $this->link_identifier;
+    }
+
+    /**
+     * Performs a query on the database.
+     *
+     * @param (string) $query - The query string.
+     * @access public.
+     */
+    public function query ($query)
+    {
+        $do = mysqli_query($this->link_identifier,$query);
+
+        if (!$do)
         {
-            mysqli_set_charset($this->connection,$_config['db']['charset']);
+            cliprz::system(error)->database(array(
+                "title"   => "MySQL error ".$this->errno(),
+                "content" => $this->error()));
         }
         else
         {
-            $this->query("SET NAMES ".$_config['db']['charset']);
-            // $this->query("SET CHARACTER SET ".$_config['db']['charset']);
+            return $do;
         }
     }
 
     /**
-     * Close mysql connection.
+     * Escapes special characters in a string for use in an SQL statement. (Real escape string).
      *
+     * @param (string) $escapestr - The string to be escaped.
      * @access public.
      */
-    public function close ()
+    public function res($escapestr)
     {
-        mysqli_close($this->connection);
+        if (is_array($escapestr))
+        {
+            foreach ($escapestr as $key => $val)
+            {
+                $escapestr[$key] = self::res($val);
+            }
+        }
+        else
+        {
+            $escapestr = trim(mysqli_real_escape_string($this->link_identifier,$escapestr));
+        }
+
+        return $escapestr;
     }
 
     /**
-     * The MySQL connection.
+     * Gets the number of affected rows in a previous SQL operation.
      *
      * @access public.
      */
-    public function link_identifier ()
+    public function affected_rows ()
     {
-        return $this->connection;
+        mysqli_affected_rows($this->link_identifier);
     }
 
     /**
-     * Database prefix.
+     * Returns the auto generated id used in the last query.
      *
      * @access public.
      */
-    public function prefix ()
+    public function insert_id ()
     {
-        global $_config;
-        return $_config['db']['prefix'];
+        mysqli_insert_id($this->link_identifier);
     }
 
     /**
-     * Get mysql version.
+     * Returns a string description of the last error.
+     *
+     * @access public.
+     */
+    public function error ()
+    {
+        return mysqli_error($this->link_identifier);
+    }
+
+    /**
+     * Returns the error code for the most recent function call.
+     *
+     * @access public.
+     */
+    public function errno ()
+    {
+        return mysqli_errno($this->link_identifier);
+    }
+
+    /**
+     * Returns a string description of the last connect error.
+     *
+     * @access public.
+     */
+    public function connect_error ()
+    {
+        return mysqli_connect_error();
+    }
+
+    /**
+     * Returns the error code from last connect call.
+     *
+     * @access public.
+     */
+    public function connect_errno ()
+    {
+        return mysqli_connect_errno();
+    }
+
+    /**
+     * Get driver Version number.
      *
      * @access public.
      */
     public function version ()
     {
-        return "SELECT version() AS ver";
+        mysqli_get_client_version();
     }
 
     /**
-     * Send a MySQL query.
+     * Get driver Platform.
      *
-     * @param (string) $sql - An SQL query.
      * @access public.
      */
-    public function query ($sql)
+    public function platform ()
     {
-        $query = mysqli_query($this->connection,$sql);
+        mysqli_get_client_info();
+    }
 
-        if (!$query)
-        {
-            cliprz::system(error)->database(array(
-                "title"   => "MySQL error ".mysqli_errno($this->connection),
-                "content" => mysqli_error($this->connection)));
-        }
-        else
-        {
-            return $query;
-        }
+    /**
+     * Closes a previously opened database connection.
+     *
+     * @access public.
+     */
+    public function close ()
+    {
+        mysqli_close($this->link_identifier);
     }
 
     /**
      * Selection from the database tables.
      *
-     * @param (string) $table - table name in database.
-     * @param (string) $fields - fields name.
-     * @param (string) $where - where SQL.
-     * @param (string) $orderby - ORDER BY SQL.
-     * @param (string) $limit - LIMIT SQL.
+     * @param (string) $table   - Table name.
+     * @param (string) $fields  - Fields names.
+     * @param (string) $where   - Where SQL.
+     * @param (string) $orderby - Order By SQL.
+     * @param (string) $limit   - Limit SQL.
      * @access public.
      */
-    public function select($table,$fields='*',$where='',$orderby='',$limit='')
+    public function select ($table,$fields='*',$where='',$orderby='',$limit='')
     {
-        $query = "SELECT ".$fields." FROM ".$this->prefix()."".$table."";
+        $query = "SELECT ".$fields." FROM `".C_DATABASE_PREFIX.$table."`";
 
         if ($where != '')
         {
@@ -201,51 +289,48 @@ class cliprz_database_driver_mysqli
             $query .= " LIMIT ".$limit."";
         }
 
-        $select = $this->query($query);
-        return $select;
+        return $this->query($query);
     }
 
     /**
-     * Insert data into MySQL database.
+     * Insert data into database.
      *
-     * @param (string) $table - table name in database.
-     * @param (array) $array -post variables with Keys.
+     * @param (string) $table - Table name.
+     * @param (array)  $posts - posts as array with keys.
      * @access public.
      */
-    public function insert($table,$array)
+    public function insert ($table,$posts)
     {
         // Check array
-		if(!is_array($array))
+		if(!is_array($posts))
         {
             return false;
         }
 
-        // Impload array keys from the the array
-        $fields = "`".implode("`,`", array_keys($array))."`";
+        // Impload $posts array keys from the the array
+        $fields = "`".implode("`,`", array_keys($posts))."`";
 
-        // Impload array as variables
-        $values = implode("','",$array);
+        // Impload $posts array as variables
+        $values = implode("','",$posts);
 
         // Query
-        $insert = $this->query("INSERT INTO ".$this->prefix()."".$table." (".$fields.") VALUES ('".$values."')");
-
-        return $insert;
+        return $this->query("INSERT INTO `".C_DATABASE_PREFIX.$table."` (".$fields.") VALUES ('".$values."')");
     }
 
     /**
-     * Update mysql database data.
+     * Update data from database.
      *
-     * @param (string) $table - table name in database.
-     * @param (array) $array - Array with Keys.
-     * @param (string) $where -  Where $_GET.
-     * @param (string) $limit - Limit.
-     * @param (boolean) $no_quote - Quote default is false (true or false).
+     * @param (string)  $table    - Table name.
+     * @param (array)   $posts    - posts as array with keys.
+     * @param (string)  $where    - Where SQL.
+     * @param (array)   $limit    - Limit SQL.
+     * @param (boolean) $no_quote - no quote.
      * @access public.
      */
-    public function update($table, $array, $where="", $limit="", $no_quote=false)
+    public function update ($table, $posts, $where="", $limit="", $no_quote=false)
     {
         // Check array
-		if(!is_array($array))
+		if(!is_array($posts))
         {
             return false;
         }
@@ -259,7 +344,7 @@ class cliprz_database_driver_mysqli
             $quote = "";
         }
 
-		foreach($array as $field => $value)
+		foreach($posts as $field => $value)
 		{
 			$query .= $comma."`".$field."`=".$quote."".$value."".$quote."";
 			$comma = ', ';
@@ -275,169 +360,340 @@ class cliprz_database_driver_mysqli
             $query .= " LIMIT $limit";
         }
 
-        $update = $this->query("UPDATE ".$this->prefix()."".$table." SET ".$query."");
-        return $update;
+        return $this->query("UPDATE `".C_DATABASE_PREFIX.$table."` SET ".$query."");
     }
 
     /**
-     * Update data from MySQL database where Specific SQL requested.
+     * Update data from database where Specific SQL requested.
      *
-     * @param (string) $table - table name in database.
-     * @param (string) $fields - field names.
-     * @param (string) $where - where id = $_GET['id'];.
+     * @param (string) $table  - Table name.
+     * @param (string) $fields - Fields names.
+     * @param (string) $where  - Where SQL.
      * @access public.
      */
-    public function update_where($table,$fields,$where)
+    public function update_where ($table,$fields,$where)
     {
-        $update_where = $this->query("UPDATE ".$this->prefix()."".$table." SET ".$fields." WHERE ".$where."");
-        return $update_where;
+        return $this->query("UPDATE `".C_DATABASE_PREFIX.$table."` SET ".$fields." WHERE ".$where."");
     }
 
     /**
-     * Delete data from MySQL database where Specific SQL requested.
+     * Delete data from database where Specific SQL requested.
      *
-     * @param (string) $table - table name in database.
-     * @param (string) $field_name - field name.
-     * @param (string) $where - Where value.
+     * @param (string) $table - Table name.
+     * @param (string) $where - Where SQL.
      * @access public.
      */
-    public function delete($table,$field_name,$where)
+    public function delete ($table,$where)
     {
-        $delete = $this->query("DELETE FROM ".$this->prefix()."".$table." WHERE ".$field_name."='".$where."'");
-        return $delete;
+        return $this->query("DELETE FROM `".C_DATABASE_PREFIX.$table."` WHERE ".$where."");
     }
 
     /**
-     * Escapes special characters in a string for use in an SQL statement.
+     * Changes the user of the specified database connection.
      *
-     * @param (string) $str - The string that is to be escaped.
+     * @param (string) $database_name - The new database name.
      * @access public.
      */
-    public function real_escape_string($str)
+    public function change_user ($database_name)
     {
-        if (function_exists('mysqli_real_escape_string'))
+        global $_config;
+        return mysqli_change_user($_config['db']['user'],$_config['db']['pass'],$database_name);
+    }
+
+    /********************************************************************/
+    /****************************** Result ******************************/
+    /********************************************************************/
+
+    /**
+     * Fetch a result row as an associative, a numeric array, or both.
+     *
+     * @param (string) $result     - A result set identifier returned by query.
+     * @param (string) $resulttype - This optional parameter is a constant indicating what type of array should be produced from the current row data.
+     *  $resulttype :
+     *   'ASSOC'
+     *   'NUM'
+     *   'BOTH'
+     * @access public.
+     */
+    public function fetch_array ($result,$resulttype='')
+    {
+        $return = null;
+
+        switch ($resulttype)
         {
-            $escape = trim(mysqli_real_escape_string($this->connection,$str));
-            return $escape;
+            case 'ASSOC':
+                $return = mysqli_fetch_array($result,MYSQLI_ASSOC);
+            break;
+            case 'NUM':
+                $return = mysqli_fetch_array($result,MYSQLI_NUM);
+            break;
+            case 'BOTH':
+                $return = mysqli_fetch_array($result,MYSQLI_BOTH);
+            break;
+            default:
+                $return = mysqli_fetch_array($result);
+            break;
+        }
+
+        return $return;
+    }
+
+    /**
+     * Returns the current row of a result set as an object.
+     *
+     * @param (string) $result     - A result set identifier returned by query.
+     * @param (string) $class_name - The name of the class to instantiate, set the properties of and return. If not specified, a stdClass object is returned.
+     * @param (array)  $params     - An optional array of parameters to pass to the constructor for class_name objects.
+     * @access public.
+     */
+    public function fetch_object ($result,$class_name=null,$params=null)
+    {
+        $return = null;
+
+        if ($class_name !== null)
+        {
+            $return = mysqli_fetch_object($result,$class_name);
+        }
+        else if ($params !== null && is_array($params))
+        {
+            $return = mysqli_fetch_object($result,$class_name,$params);
         }
         else
         {
-            $search  = array("\\","\0","\n","\r","\x1a","'",'"');
-            $replace = array("\\\\","\\0","\\n","\\r","\Z","\'",'\"');
-            $escape  = trim(str_replace($search,$replace,$str));
-            return $escape;
+            $return = mysqli_fetch_object($result);
         }
-    }
 
-    /****************************************/
-    // Result methods
-    /****************************************/
-
-    /**
-     * Fetch a result row as an associative array.
-     * Returns an associative array that corresponds to the fetched row and moves the internal data pointer ahead.
-     *
-     * @param (resource) $result - result.
-     * @access public.
-     */
-    public function fetch_assoc($result)
-    {
-        $fetch_assoc = mysqli_fetch_assoc($result);
-        return $fetch_assoc;
+        return $return;
     }
 
     /**
-     * Fetch a result row as an associative array, a numeric array, or both.
-     * Returns an array that corresponds to the fetched row and moves the internal data pointer ahead.
+     * Fetch a result row as an associative array
      *
-     * @param (resource) $result - result.
+     * @param (string) $result - A result set identifier returned by query.
      * @access public.
      */
-    public function fetch_array($result)
+    public function fetch_assoc ($result)
     {
-        $fetch_array = mysqli_fetch_array($result);
-        return $fetch_array;
+        return mysqli_fetch_assoc($result);
     }
 
     /**
-     * Fetch a result row as an object.
-     * Returns an object with properties that correspond to the fetched row and moves the internal data pointer ahead.
+     * Fetches all result rows as an associative array, a numeric array, or both.
      *
-     * @param (resource) $result - result.
+     * @param (string) $result     - A result set identifier returned by query.
+     * @param (string) $resulttype - This optional parameter is a constant indicating what type of array should be produced from the current row data.
+     *  $resulttype :
+     *   'ASSOC'
+     *   'NUM'
+     *   'BOTH'
      * @access public.
      */
-    public function fetch_object($result)
+    public function fetch_all ($result,$resulttype='')
     {
-        $fetch_object = mysqli_fetch_object($result);
-        return $fetch_object;
+        $return = null;
+
+        switch ($resulttype)
+        {
+            case 'ASSOC':
+                $return = mysqli_fetch_all($result,MYSQLI_ASSOC);
+            break;
+            case 'NUM':
+                $return = mysqli_fetch_all($result,MYSQLI_NUM);
+            break;
+            case 'BOTH':
+                $return = mysqli_fetch_all($result,MYSQLI_BOTH);
+            break;
+            default:
+                $return = mysqli_fetch_all($result);
+            break;
+        }
+
+        return $return;
+    }
+
+    /**
+     * Returns the next field in the result set.
+     *
+     * @param (string) $result - A result set identifier returned by query.
+     * @access public.
+     */
+    public function fetch_field ($result)
+    {
+        return mysqli_fetch_field($result);
+    }
+
+    /**
+     * Returns an array of objects representing the fields in a result set.
+     *
+     * @param (string) $result - A result set identifier returned by query.
+     * @access public.
+     */
+    public function fetch_fields ($result)
+    {
+        return mysqli_fetch_fields($result);
     }
 
     /**
      * Get a result row as an enumerated array.
      *
-     * @param (resource) $result - Result.
+     * @param (string) $result - A result set identifier returned by query.
      * @access public.
      */
-    public function fetch_row($result)
+    public function fetch_row ($result)
     {
-        $fetch_row = mysqli_fetch_row($result);
-        return $fetch_row;
+        return mysqli_fetch_row($result);
     }
 
     /**
-     * Free result memory.
-     * will free all memory associated with the result identifier result.
+     * Get the number of fields in a result.
      *
-     * @param (resource) $result - result.
+     * @param (string) $result - A result set identifier returned by query.
      * @access public.
      */
-    public function free_result($result)
+    public function num_fields ()
     {
-        $free_result = mysqli_free_result($result);
-        return $free_result;
+        return mysqli_num_fields($result);
     }
 
     /**
-     * Get number of rows in result.
+     * Frees the memory associated with a result.
      *
-     * @param (resource) $result - result.
+     * @param (string) $result - A result set identifier returned by query.
      * @access public.
      */
-    public function num_rows($result)
+    public function free_result ($result)
     {
-        $num_rows = mysqli_num_rows($result);
-        return $num_rows;
+        return mysqli_free_result($result);
     }
 
     /**
-     * Get number of fields in result.
+     * Returns the lengths of the columns of the current row in the result set.
      *
-     * @param (resource) $result - result.
+     * @param (string) $result - A result set identifier returned by query.
      * @access public.
      */
-    public function num_fields($result)
+    public function fetch_lengths ($result)
     {
-        $num_fields = mysqli_num_fields($result);
-        return $num_fields;
+        return mysqli_fetch_lengths($result);
     }
 
     /**
-     * Get number of affected rows in previous MySQL operation.
+     * Gets the number of rows in a result.
+     *
+     * @param (string) $result - A result set identifier returned by query.
+     * @access public.
+     */
+    public function num_rows ($result)
+    {
+        return mysqli_num_rows($result);
+    }
+
+    /*******************************************************************/
+    /****************************** Forge ******************************/
+    /*******************************************************************/
+
+    /**
+     * Create a new database.
+     *
+     * @param (string) $database_name - Database name.
+     * @access public.
+     */
+    public function create_database ($database_name)
+    {
+        $this->query("CREATE DATABASE `".$database_name."`");
+    }
+
+    /**
+     * Drop a database.
+     *
+     * @param (string) $database_name - Database name.
+     * @access public.
+     */
+    public function drop_database ($database_name)
+    {
+        $this->query("DROP DATABASE `".$database_name."`");
+    }
+
+    /**
+     * Create a new table.
+     *
+     * @param (string) $table_name - Table name without prefix.
+     * @access public.
+     */
+    public function create_table ($table_name)
+    {
+        $this->query("CREATE TABLE IF NOT EXISTS `".C_DATABASE_PREFIX.$table_name."` DEFAULT CHARSET=".C_DATABASE_CHARSET." COLLATE ".C_DATABASE_COLLATION.";") ;
+    }
+
+    /**
+     * Drop a table.
+     *
+     * @param (string) $table_name - Table name  without prefix.
+     * @access public.
+     */
+    public function drop_table ($table_name)
+    {
+        $this->query("DROP TABLE IF EXISTS `".C_DATABASE_PREFIX.$table_name."`");
+    }
+
+    /**
+     * Rename table.
+     *
+     * @param (string) $old_table_name - Old table name, Note without prefix.
+     * @param (string) $new_table_name - New table name, Note without prefix.
+     * @access public.
+     */
+    public function rename_table ($old_table_name,$new_table_name)
+    {
+        $this->query("ALTER TABLE `".C_DATABASE_PREFIX.$old_table_name."` RENAME TO `".C_DATABASE_PREFIX.$new_table_name."`");
+    }
+
+    /*********************************************************************/
+    /****************************** utility ******************************/
+    /*********************************************************************/
+
+    /**
+     * Get all databases list.
      *
      * @access public.
      */
-    public function affected_rows()
+    public function list_databases ()
     {
-        return mysqli_affected_rows($this->connection); // $link
+        $this->query("SHOW DATABASES");
     }
 
-    /****************************************/
-    // Forge methods
-    /****************************************/
+    /**
+     * Optimize table.
+     *
+     * @param (string) $table_name - Table name without prefix.
+     * @access public.
+     */
+    public function optimize_table ($table_name)
+    {
+        $this->query("OPTIMIZE TABLE `".C_DATABASE_PREFIX.$table_name."`");
+    }
 
-    /****************************************/
-    // Utility methods
-    /****************************************/
+    /**
+     * Repair table.
+     *
+     * @param (string) $table_name - Table name without prefix.
+     * @access public.
+     */
+    public function repair_table ($table_name)
+    {
+        $this->query("REPAIR TABLE `".C_DATABASE_PREFIX.$table_name."`");
+    }
+
+    /**
+     * Get database backup.
+     *
+     * @access public.
+     */
+    public function backup ()
+    {
+        return true;
+        // If you have class to backup from database useit here.
+    }
 
 }
 

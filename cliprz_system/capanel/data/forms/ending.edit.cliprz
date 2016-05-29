@@ -1,0 +1,9 @@
+</tbody>
+<tfoot>
+    <tr>
+        <td class="text-center" colspan="2"><input type="submit" value="Update data" /></td>
+    </tr>
+</tfoot>
+</table>
+<input type="hidden" name="edit" value="{tablename}" />
+</form>

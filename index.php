@@ -7,14 +7,14 @@ ob_start();
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.0.0 - Incomplete version for real use 7.
+ *  Version 1.1.0 - Stability Beta.
  *  Official website http://www.cliprz.org .
  *
  * File information :
  *  File path BASE_PATH/ .
  *  File name index.php .
  *  Created date 17/10/2012 12:54 AM.
- *  Last modification date 22/01/2013 06:31 PM.
+ *  Last modification date 14/02/2013 04:31 PM.
  *
  * Description :
  *  Home page, Never modify this file.
@@ -27,6 +27,33 @@ ob_start();
  */
 
 // Don't modify remove (#) from below lines.
+
+if (!function_exists('c_execute'))
+{
+    /**
+     * Calculate script start/end time.
+     */
+    function c_execute ()
+    {
+        list ($msec, $sec) = explode(' ', microtime());
+        $microtime = (float)$msec + (float)$sec;
+        return $microtime;
+    }
+}
+
+define("CLIPRZ_EXECUTE_START_TIME",c_execute(),true);
+
+/**
+ * Safe mode.
+ */
+#ini_set("safe_mode","Off");
+
+/**
+ * Magic quotes
+ */
+#ini_set("magic_quotes_gpc","Off");
+#ini_set("magic_quotes_runtime","Off");
+#ini_set("magic_quotes_sybase","Off");
 
 /**
  * Paths and Directories.
@@ -46,10 +73,11 @@ ini_set("cgi.force_redirect",0);
 #ini_set("zlib.output_compression_level",-1);
 
 /**
- * File Uploads
+ * File Uploads - Please read http://php.net/ini.core#ini.post-max-size.
  */
 #ini_set("file_uploads","On");
-#ini_set("upload_max_filesize","4M");
+#ini_set("memory_limit","512M"); // We think 512MB is perfect.
+#ini_set("upload_max_filesize","6M");
 #ini_set("max_file_uploads","20");
 
 /**
@@ -90,15 +118,15 @@ if (!function_exists('c_version_compare'))
 }
 
 
-if (!c_version_compare("5.2.6")) exit("Please upgrade to PHP 5.2.6 or >");
+if (!c_version_compare("5.3.0")) exit("Please upgrade to PHP 5.3.0 or >");
 
 
 require_once BASE_PATH.'cliprz_system'.DS.'autoload.php';
 
 // Don't include below files. (this files for framework team only)
-#include (BASE_PATH."cliprzmyadmin".DS."md5.php");
-#include (BASE_PATH."cliprzmyadmin".DS."hacking.php");
-#include (BASE_PATH."cliprzmyadmin".DS."console.php");
+#include (BASE_PATH."author".DS."md5.php");
+#include (BASE_PATH."author".DS."hacking.php");
+#include (BASE_PATH."author".DS."console.php");
 
 // Start Lodaed Content
 
@@ -106,13 +134,19 @@ require_once BASE_PATH.'cliprz_system'.DS.'autoload.php';
 
 // End Lodaed Content
 
-
 if (file_exists(APP_PATH.'config'.DS.'sleep.php'))
 
     require_once APP_PATH.'config'.DS.'sleep.php';
 
+define("CLIPRZ_EXECUTE_END_TIME",c_execute(),true);
+
+cliprz::system('execute')->execution();
+
+#$cliprz_contents = ob_get_contents();
+
 ob_end_flush();
 
 // Don't include below files. (this files for framework team only)
-#include (BASE_PATH."cliprzmyadmin".DS."bench.php");
+#include (BASE_PATH."author".DS."bench.php");
+#c_print_r($GLOBALS);
 ?>

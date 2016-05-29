@@ -1,0 +1,185 @@
+html,body { margin: 0; padding: 0; outline: 0; border: 0; }
+body { background-color: #FFF; color: #111111; font-family: Arial, Helvetica, sans-serif; font-size: 12px; }
+
+a { color: #005599; }
+a:hover { color: #CC0000; }
+
+:focus { outline: 0; }
+
+img { vertical-align: middle; }
+a img { border: 0; }
+
+/** Tables **/
+table { border-collapse: collapse; border-spacing: 0; width: 100%; outline: 0; border: 0; margin: 0; padding: 0; }
+table tr { vertical-align: middle; }
+table tr td { padding: 5px; }
+
+thead { background-color: #EEE; color: #808080; text-shadow: 1px 1px 0px #FFF; font-weight: bold; font-size: 15px; }
+thead tr { vertical-align: middle; }
+
+tfoot { vertical-align: middle; }
+tfoot tr { background-color: #EEE; color: #808080; text-shadow: 1px 1px 0px #FFF; font-weight: bold; }
+
+/** Forms **/
+input[type=text], input[type=password] { font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console",  Monaco, "Courier New", Courier, monospace; font-size: 12px; background-color: #FFF; border: 1px solid #EEE; padding: 5px; outline: 0; margin: 0; }
+input[type=text]:hover, input[type=password]:hover { border: 1px solid #CCC; }
+input[type=text]:focus, input[type=password]:focus { border: 1px solid #909090; }
+
+input[type=radio], input[type=checkbox] { vertical-align: middle; outline: 0; border: 0; margin: 0; padding: 0; }
+
+select { font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console",  Monaco, "Courier New", Courier, monospace; font-size: 12px; background-color: #FFF; border: 1px solid #EEE; padding: 5px; outline: 0; margin: 0; }
+select:hover { border: 1px solid #CCC; }
+select:focus { border: 1px solid #909090; }
+
+textarea { resize: none; font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console",  Monaco, "Courier New", Courier, monospace; font-size: 12px; background-color: #FFF; border: 1px solid #EEE; padding: 5px; outline: 0; margin: 0; }
+textarea:hover { border: 1px solid #CCC; }
+textarea:focus { border: 1px solid #909090; }
+
+input[type=submit] { cursor: pointer; font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console",  Monaco, "Courier New", Courier, monospace; font-size: 12px; background-color: #ccc; color: #606060; text-shadow: 1px 1px 0px #FFF; font-weight: bold; border: 1px solid #909090; padding: 5px 10px; outline: 0; margin: 0; }
+input[type=submit]:hover { border: 1px solid #707070; color: #111111; background-color: #F1F1F1; }
+input[type=submit]:disabled { border: 1px solid #CCC; color: #ccc; background-color: #F1F1F1; }
+
+/*******************************************************/
+/******************** Default Rules ********************/
+/*******************************************************/
+.clear { clear: both; }
+.null { margin: 0; }
+.br { margin: 5px 0px; }
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+.text-justify { text-align: justify; }
+.hide { display: none; }
+.watermark { color: #999 !important; }
+
+/*******************************************************/
+/******************** Wrapper Rules ********************/
+/*******************************************************/
+#wrapper { width: 920px; margin: 0 auto; position: relative; }
+
+/******************************************************/
+/******************** Header Rules ********************/
+/******************************************************/
+#header {  }
+#header .logo-side { float: left; width: 40%; }
+#header .logo-side .logo { padding: 15px 0px; }
+#header .more-side { float: right; width: 60%; }
+#header .more-side .more { padding: 15px 0px; }
+
+/******************************************************/
+/******************** Navbar Rules ********************/
+/******************************************************/
+#navbar { background-color: #F6F6F6; border: 1px solid #CCC; outline: 5px solid #EEE; }
+#navbar ul { list-style: none; padding: 0; margin: 0; }
+#navbar ul li { float: left; }
+#navbar ul li a { display: block; padding: 5px 10px; color: #909090; text-shadow: 1px 1px 0px #FFF; font-size: 14px; font-weight: bold; text-decoration: none; }
+#navbar ul li a:hover { background-color: #EEE; color: #111111; }
+
+/*******************************************************/
+/******************** Content Rules ********************/
+/*******************************************************/
+#conetnt { border: 1px solid #CCC; outline: 5px solid #EEE; }
+.content-table { border-collapse: collapse; border-spacing: 0; width: 100%; outline: 0; border: 0; margin: 0; padding: 0; }
+.content-table .content-tr { vertical-align: top; }
+.content-table .goto-side { width: 25%; border-right: 1px solid #DDD; padding: 0; }
+.content-table .content-side { width: 75%; padding: 10px; }
+
+.goto { background-color: #F6F6F6; font-size: 13px; text-shadow: 1px 1px 0px #FFF; }
+.goto-title { font-weight: bold; color: #000; padding: 5px 0px 5px 5px; border-bottom: 1px solid #DDD; cursor: pointer; }
+.goto-title a { color: #505050; text-decoration: none; }
+.goto-title .goto-suject { float: left; width: 90%; }
+.goto-title .goto-chevron { float: right; width: 10%; text-align: left; }
+.goto-list { display: none; }
+.goto-list ul { list-style: none; padding: 0; margin: 0; }
+.goto-list ul li { background-color: #FBFBFB; }
+.goto-list ul li a { display: block; padding: 5px 0px 5px 10px; color: #505050; text-decoration: none; border-bottom: 1px #DDD solid; }
+.goto-list ul li a:hover { background-color: #F1F1F1; }
+
+.goto-options { margin-bottom: 10px; text-align: center; font-size: smaller; }
+.goto-options a { color: #CC3300; text-decoration: none; }
+
+.tree { font-weight: bold; font-size: 15px; padding: 0px 5px 5px 5px; border-bottom: 1px solid #DDD; margin-bottom: 10px; }
+.tree a { color: #CC3300; text-decoration: none; }
+.tree a:hover { color: #005599; }
+.tree .tree-mark { color: #CCC; }
+
+.tbl1 { background-color: #F4F4F4; border-bottom: 1px solid #eee; }
+.tbl2 { background-color: #FBFBFB; border-bottom: 1PX solid #eee; }
+.tbl1:hover , .tbl2:hover { background-color: #FFFFEA; }
+
+a.edit { color: #707070; text-decoration: none; }
+a.delete { color: #707070; text-decoration: none; }
+a.new { color: #707070; text-decoration: none; }
+a.edit:hover { color: #008000; }
+a.delete:hover { color: #990000; }
+a.new:hover { color: #000099; }
+
+.textarea-big { width: 400px; height: 120px; }
+.textarea-small { width: 300px; height: 80px; }
+.textarea-xsmall { width: 200px; height: 60px; }
+
+.text-big { width: 300px; }
+.text-small { width: 200px; }
+.text-xsmall { width: 50px; }
+
+/** Alert boxes **/
+.success { margin: 0px 0px 10px 0px; background: #E2F6C5 url(images/success.png) no-repeat 10px center; border: 1px solid #79C20D; color: #32510F; padding: 5px 5px 5px 40px; font-weight: bold; }
+.error { margin: 0px 0px 10px 0px; background: #F3D9D9 url(images/error.png) no-repeat 10px center; border: 1px solid #D20009; color: #7B040F; padding: 5px 5px 5px 40px; font-weight: bold; }
+.info { margin: 0px 0px 10px 0px; background: #B5E5EF url(images/info.png) no-repeat 10px center; border: 1px solid #77BACE; color: #082B33; padding: 5px 5px 5px 40px; font-weight: bold; }
+.warning { margin: 0px 0px 10px 0px; background: #F5F3BA url(images/warning.png) no-repeat 10px center; border: 1px solid #C7A20D; color: #796616; padding: 5px 5px 5px 40px; font-weight: bold; }
+
+/** Login form **/
+#login { width: 550px; margin: 100px auto 0px auto; position: relative; border: 1px solid #eee; background-color: #FBFBFB; }
+#login .login_field { padding: 10px; text-align: center; }
+
+/** redirecting page **/
+#redirecting { width: 500px; margin: 100px auto 0px auto; position: relative; border: 1px solid #eee; }
+#redirecting .redirecting_title { padding: 5px; font-weight: bold; font-size: 13px; }
+#redirecting .redirecting_message { padding: 10px 5px; }
+#redirecting .redirecting_waiting { padding: 5px; background-color: #F7F7F7; }
+#redirecting .redirecting_waiting a { text-decoration: none; }
+
+/** Pagination **/
+.pagination { font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console",  Monaco, "Courier New", Courier, monospace; font-size: 11px; }
+.pagination a { background-color: #FFF; text-align: center; color: #707070; text-decoration: none; display: inline-block; margin: 0 2px; padding: 2px 7px; border: 1px solid #EEE; }
+.pagination a:hover { background-color: #F7F7F7; }
+.pagination .current { background-color: #FFF; text-align: center; color: #ccc; text-decoration: none; display: inline-block; margin: 0 2px; padding: 2px 7px; border: 1px solid #eee; }
+.pagination .disabled { background-color: #FFF; text-align: center; color: #ccc; text-decoration: none; display: inline-block; margin: 0 2px; padding: 2px 7px; border: 1px solid #eee; }
+
+/******************************************************/
+/******************** Footer Rules ********************/
+/******************************************************/
+#footer { font-family: Tahoma, sans-serif; font-size: 11px; margin: 10px 0px; }
+#footer .under-side { float: left; width: 50%; }
+#footer .under-side .under { color: #909090; padding: 10px 0px; }
+#footer .copyrights-side { float: right; width: 50%; }
+#footer .copyrights-side .copyrights { color: #909090; padding: 10px 0px; text-align: right; }
+
+/*****************************************************/
+/******************** Tipsy Rules ********************/
+/*****************************************************/
+.tipsy { font-size: 10px; position: absolute; padding: 5px; z-index: 100000; }
+.tipsy-inner { background-color: #000; color: #FFF; max-width: 200px; padding: 5px 8px 4px 8px; text-align: center; }
+
+/* Rounded corners */
+.tipsy-inner { border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
+
+/* Uncomment for shadow */
+/*.tipsy-inner { box-shadow: 0 0 5px #000000; -webkit-box-shadow: 0 0 5px #000000; -moz-box-shadow: 0 0 5px #000000; }*/
+
+.tipsy-arrow { position: absolute; width: 0; height: 0; line-height: 0; border: 5px dashed #000; }
+
+/* Rules to colour arrows */
+.tipsy-arrow-n { border-bottom-color: #000; }
+.tipsy-arrow-s { border-top-color: #000; }
+.tipsy-arrow-e { border-left-color: #000; }
+.tipsy-arrow-w { border-right-color: #000; }
+
+.tipsy-n .tipsy-arrow { top: 0px; left: 50%; margin-left: -5px; border-bottom-style: solid; border-top: none; border-left-color: transparent; border-right-color: transparent; }
+.tipsy-nw .tipsy-arrow { top: 0; left: 10px; border-bottom-style: solid; border-top: none; border-left-color: transparent; border-right-color: transparent;}
+.tipsy-ne .tipsy-arrow { top: 0; right: 10px; border-bottom-style: solid; border-top: none;  border-left-color: transparent; border-right-color: transparent;}
+.tipsy-s .tipsy-arrow { bottom: 0; left: 50%; margin-left: -5px; border-top-style: solid; border-bottom: none;  border-left-color: transparent; border-right-color: transparent; }
+.tipsy-sw .tipsy-arrow { bottom: 0; left: 10px; border-top-style: solid; border-bottom: none;  border-left-color: transparent; border-right-color: transparent; }
+.tipsy-se .tipsy-arrow { bottom: 0; right: 10px; border-top-style: solid; border-bottom: none; border-left-color: transparent; border-right-color: transparent; }
+.tipsy-e .tipsy-arrow { right: 0; top: 50%; margin-top: -5px; border-left-style: solid; border-right: none; border-top-color: transparent; border-bottom-color: transparent; }
+.tipsy-w .tipsy-arrow { left: 0; top: 50%; margin-top: -5px; border-right-style: solid; border-left: none; border-top-color: transparent; border-bottom-color: transparent; }

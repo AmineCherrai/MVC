@@ -6,14 +6,14 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.0.0 - Incomplete version for real use 7.
+ *  Version 1.1.0 - Stability Beta.
  *  Official website http://www.cliprz.org .
  *
  * File information :
  *  File path BASE_PATH/cliprz_system/functions/ .
  *  File name datetime.functions.php .
  *  Created date 29/12/2012 10:50 AM.
- *  Last modification 22/01/2013 04:30 PM.
+ *  Last modification 27/01/2013 06:35 AM.
  *
  * Description :
  *  Date and Time Functions.
@@ -224,7 +224,78 @@ if (!function_exists('c_short_month'))
      */
     function c_short_month($month)
     {
-        return ucfirst(c_mb_substr($month,0,3));
+
+		$months = array(
+            "january","february","march","april","may","june","july",
+            "august","september","october","november","december");
+
+        if (in_array(strtolower($month),$months))
+        {
+            $months = array(); // Unset
+
+            return ucfirst(c_mb_substr($month,0,3));
+		}
+        else
+        {
+            return $month.' '.c_lang('c_not_a_month');
+        }
+    }
+
+}
+
+if (!function_exists('c_time_ago'))
+{
+    /**
+     * Convert Time To Ago
+     *														 Y   M  D  H  M
+     * @param (string) $time - the time should be like this 2009-03-04 17:45 .
+     */
+    function c_time_ago($time)
+    {
+
+        if(empty($time))
+        {
+            return c_lang('c_not_valid_date');
+        }
+
+        $periods         = array(c_lang('c_second'), c_lang('c_minute'), c_lang('c_hour'), c_lang('c_day'),
+                            c_lang('c_week'), c_lang('c_month'), c_lang('c_year'), c_lang('c_decade'));
+        $lengths         = array("60","60","24","7","4.35","12","10");
+
+        $now             = time();
+        $unix_date       = strtotime($time);
+
+        // check validity of date
+        if(empty($unix_date))
+        {
+            return c_lang('c_bad_date');
+        }
+
+        // is it future date or past date
+        if($now > $unix_date)
+        {
+            $difference = $now - $unix_date;
+            $tense      = c_lang('c_bad_date');
+        }
+        else
+        {
+            $difference = $unix_date - $now;
+            $tense      = c_lang('c_from_now');
+        }
+
+        for($j = 0; $difference >= $lengths[$j] && $j < count($lengths)-1; $j++)
+        {
+            $difference /= $lengths[$j];
+        }
+
+        $difference = round($difference);
+
+        if($difference != 1)
+        {
+            $periods[$j].= c_lang('c_s');
+        }
+
+        return "$difference $periods[$j] {$tense}";
     }
 }
 

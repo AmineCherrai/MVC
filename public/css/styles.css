@@ -7,6 +7,6 @@ a:hover { color: #990000; }
 .path { font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console",  Monaco, "Courier New", Courier, monospace; padding: 5px; border: 1px solid #EEE; background-color: #FFFFCC; margin: 10px 0px; direction: ltr; text-align: left; }
 .code { font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console",  Monaco, "Courier New", Courier, monospace; padding: 5px; border: 1px solid #EEE; background-color: #FFF; margin: 10px 0px; direction: ltr; text-align: left; }
 
-.under { text-align: center; margin: 20px 0px; font-size: 11px; direction: ltr; font-family: Arial, Verdana; color: #707070; }
+.under { text-align: center; margin: 20px 0px; font-size: 12px; direction: ltr; color: #707070; }
 .content { width: 700px; margin: 0px auto; position: relative; padding: 10px; }
 .logo { width: 700px; margin: 0 auto; position: relative; padding: 10px; border-bottom: 1px solid #DDD; }

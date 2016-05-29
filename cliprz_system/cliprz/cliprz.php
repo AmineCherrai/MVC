@@ -6,14 +6,14 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.0.0 - Incomplete version for real use 7.
+ *  Version 1.1.0 - Stability Beta.
  *  Official website http://www.cliprz.org .
  *
  * File information :
  *  File path BASE_PATH/cliprz_system/cliprz/ .
  *  File name cliprz.php .
  *  Created date 17/10/2012 01:17 AM.
- *  Last modification date 29/12/2012 11:43 AM.
+ *  Last modification date 12/02/2013 11:14 AM.
  *
  * Description :
  *  cliprz class is the main file that controls all system files and objects.
@@ -26,6 +26,8 @@
  */
 
 if (!defined("IN_CLIPRZ")) die('Access Denied');
+
+c_call_exception('cliprz','cliprz');
 
 class cliprz
 {
@@ -49,10 +51,22 @@ class cliprz
     protected static $_libraries = array();
 
     /**
-     * @var (string) $library_prefix - systen library classes prefix as in example 'library_'classname {};.
+     * @var (string) $library_prefix - system library classes prefix as in example 'library_'classname {};.
      * @access protected.
      */
     protected static $library_prefix = "library_";
+
+    /**
+     * @var (array) $_models - model objects (this get model objects in cliprz_application models folder only).
+     * @access protected.
+     */
+    protected static $_models = array();
+
+    /**
+     * @var (string) $model_prefix - models classes prefix as in example 'model_'classname {};.
+     * @access protected.
+     */
+    protected static $model_prefix = "model_";
 
     /**
      * Cliprz constructor.
@@ -95,19 +109,25 @@ class cliprz
     public static function system_use($directory,$class)
     {
         $include_path = SYS_PATH.c_trim_path($directory).DS.$class.'.php';
-
-        if (file_exists($include_path))
+        try
         {
-            require_once $include_path;
+            if (file_exists($include_path))
+            {
+                require_once $include_path;
 
-            $controller_class = (string) strtolower(CLIPRZ.$class);
+                $controller_class = (string) strtolower(CLIPRZ.'_'.$class);
 
-            //self::$_objects[$controller_class] = new $controller_class(self::$_instances);
-            self::$_objects[$controller_class] = new $controller_class();
+                //self::$_objects[$controller_class] = new $controller_class(self::$_instances);
+                self::$_objects[$controller_class] = new $controller_class();
+            }
+            else
+            {
+                throw new cliprz_exception($include_path.' not found in cliprz system path.');
+            }
         }
-        else
+        catch (cliprz_exception $e)
         {
-            trigger_error($include_path.' not found in cliprz system path.');
+            c_log_error($e);
         }
     }
 
@@ -120,15 +140,21 @@ class cliprz
      */
     public static function system($system_class)
     {
-        $key = strtolower(CLIPRZ.$system_class);
-
-        if (is_object(self::$_objects[$key]))
+        $key = strtolower(CLIPRZ.'_'.$system_class);
+        try
         {
-            return self::$_objects[$key];
+            if (is_object(self::$_objects[$key]))
+            {
+                return self::$_objects[$key];
+            }
+            else
+            {
+                throw new cliprz_exception($key.' class not found in cliprz system.');
+            }
         }
-        else
+        catch (cliprz_exception $e)
         {
-            trigger_error($key.' class not found in cliprz system.');
+            c_log_error($e);
         }
     }
 
@@ -186,10 +212,10 @@ class cliprz
                     $output = (string) "Working under"
                         .$s
                         .'<a target="_blank" href="http://www.'.$configuration['website'].'/">'
-                        .$configuration['name']
+                        .ucfirst($configuration['name'])
                         .'</a>'
                         .$s
-                        .'environment.';
+                        .'framework.';
                 break;
                 case 'generator':
                     $output = (string) $configuration['name']." Version ".$configuration['version'];
@@ -214,7 +240,7 @@ class cliprz
 		self::system_use("cliprz/info/","info");
 		self::system("info")->info();
 	}
-	
+
     /**
      * load your library file to use.
      *
@@ -230,18 +256,24 @@ class cliprz
     public static function library_use($directory,$class)
     {
         $include_path = SYS_PATH."libraries".DS.c_trim_path($directory).DS.$class.'.php';
-
-        if (file_exists($include_path))
+        try
         {
-            require_once $include_path;
+            if (file_exists($include_path))
+            {
+                require_once $include_path;
 
-            $controller_class = (string) strtolower(self::$library_prefix.$class);
+                $controller_class = (string) strtolower(self::$library_prefix.$class);
 
-            self::$_libraries[$controller_class] = new $controller_class();
+                self::$_libraries[$controller_class] = new $controller_class();
+            }
+            else
+            {
+                throw new cliprz_exception($include_path.' library not found in cliprz system libraries.');
+            }
         }
-        else
+        catch (cliprz_exception $e)
         {
-            trigger_error($include_path.' library not found in cliprz system libraries.');
+            c_log_error($e);
         }
     }
 
@@ -255,14 +287,94 @@ class cliprz
     public static function library($library_class)
     {
         $key = strtolower(self::$library_prefix.$library_class);
-
-        if (is_object(self::$_libraries[$key]))
+        try
         {
-            return self::$_libraries[$key];
+            if (is_object(self::$_libraries[$key]))
+            {
+                return self::$_libraries[$key];
+            }
+            else
+            {
+                throw new cliprz_exception($key.' class not found in cliprz system libraries.');
+            }
         }
-        else
+        catch (cliprz_exception $e)
         {
-            trigger_error($key.' class not found in cliprz system libraries.');
+            c_log_error($e);
+        }
+    }
+
+    /**
+     * Check is library loaded.
+     *
+     * @param (string) $library - Library name without library_ prefix.
+     * @access public.
+     */
+    public static function is_library_loaded ($library)
+    {
+        return (bool) (isset(self::$_libraries[self::$library_prefix.$library]) && is_object(self::$_libraries[self::$library_prefix.$library]) ? true : false);
+    }
+
+    /**
+     * Load model form cliprz_application models folder.
+     *
+     * @param (string) $model - class file name without .php extension, Please read the note below.
+     * @param (string) $directory - The folder that contains the class without / ending.
+     * @return require path/class and start new model class.
+     * @access protected.
+     *
+     * @note about $model variable file name in cliprz_application models directory must be same class name,
+     *  do not forget all file names and class name in cliprz_application models must be lowercase characters,
+     *  As an example : file name (cliprz.php), class name (cliprz).
+     */
+    final public static function model_use ($model,$directory='')
+    {
+        $model_path = APP_PATH.'models'.DS.c_trim_path($directory).$model.'.php';
+        try
+        {
+            if (file_exists($model_path))
+            {
+                require_once $model_path;
+
+                $model_class = (string) strtolower(self::$model_prefix.$model);
+
+                self::$_models[$model_class] = new $model_class();
+            }
+            else
+            {
+                throw new cliprz_exception($model.' not found.');
+            }
+        }
+        catch (cliprz_exception $e)
+        {
+            c_log_error($e);
+        }
+    }
+
+    /**
+     * Get loaded model class.
+     *
+     * @param (string) $model_class - model class name.
+     * @return loaded model class.
+     * @access public.
+     */
+    public static function model($model_class)
+    {
+        $key = strtolower(self::$model_prefix.$model_class);
+        try
+        {
+            if (is_object(self::$_models[$key]))
+            {
+                return self::$_models[$key];
+            }
+            else
+            {
+                throw new cliprz_exception($key.' class not found in models folder.');
+            }
+        }
+        catch (cliprz_exception $e)
+        {
+            c_log_error($e);
         }
     }
 

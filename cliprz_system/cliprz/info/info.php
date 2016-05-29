@@ -6,7 +6,7 @@
  *  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
  *
  * Framework information :
- *  Version 1.0.0 - Incomplete version for real use 7.
+ *  Version 1.1.0 - Stability Beta.
  *  Official website http://www.cliprz.org .
  *
  * File information :
@@ -34,7 +34,7 @@ class cliprz_info
      * Show cliprz information.
      *
      * @access public.
-     * @warning Don't ever user cliprz::info();, You can user cliprzinfo();
+     * @warning Don't ever user cliprz::info();, You can use cliprzinfo();
      */
     public static function info ()
     {

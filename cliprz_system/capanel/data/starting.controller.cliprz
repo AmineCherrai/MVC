@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * {tablename} controller.
+ *
+ * Created date {date}.
+ * Last modification date {date}.
+ */
+
+if (!defined("IN_CLIPRZ")) die('Access Denied');
+
+class capanel_{tablename}
+{
+
+

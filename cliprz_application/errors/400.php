@@ -4,15 +4,7 @@
 <head>
 <meta charset="UTF-8" />
 <title><?=c_lang('c_400_bad_request');?></title>
-<style type="text/css">
-html,body { margin: 5px; padding: 0; outline: 0; }
-body { background-color: white; color: black; }
-#container { width: 500px; }
-#bodytitle { font: 13pt/15pt verdana, arial, sans-serif; height: 35px; vertical-align: top; }
-.bodytext  { font: 8pt/11pt verdana, arial, sans-serif;  }
-a:link     { font: 8pt/11pt verdana, arial, sans-serif; color: red; }
-a:visited  { font: 8pt/11pt verdana, arial, sans-serif; color: #4e4e4e; }
-</style>
+<link rel="stylesheet" href="<?php echo cliprz::system(error)->errors_style('400.css'); ?>" type="text/css" />
 </head>
 <body>
 
@@ -23,7 +15,7 @@ a:visited  { font: 8pt/11pt verdana, arial, sans-serif; color: #4e4e4e; }
 <?=c_lang('c_400_bad_request_message');?>
 <br />
 <br />
-<a href="<?php echo c_url(""); ?>"><?php echo c_lang("c_back_to_homepage"); ?></a>
+<a href="<?php echo C_URL; ?>"><?php echo c_lang("c_back_to_homepage"); ?></a>
 </div>
 </div>
 
