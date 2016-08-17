@@ -1,0 +1,79 @@
+Pagination Library README
+====================
+
+Pagination you rows from table.
+
+You must enabled database from config.
+
+$_config['db']['use_database'] = true;
+
+===================================================================
+Add pagination folder to BASE_PATH/cliprz_system/libraries/
+===================================================================
+
+========================================================
+Add in BASE_PATH/cliprz_application/config/libraries.php
+========================================================
+cliprz::library_use("pagination","pagination"); 
+
+=============
+How to use it
+=============
+
+1 : Add some css styles for pagination class.
+
+<style>
+.pagination { font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console",  Monaco, "Courier New", Courier, monospace; font-size: 11px; }
+.pagination a { background-color: #FFF; text-align: center; color: #707070; text-decoration: none; display: inline-block; margin: 0 2px; padding: 2px 7px; border: 1px solid #EEE; }
+.pagination a:hover { background-color: #F7F7F7; }
+.pagination .current { background-color: #FFF; text-align: center; color: #ccc; text-decoration: none; display: inline-block; margin: 0 2px; padding: 2px 7px; border: 1px solid #eee; }
+.pagination .disabled { background-color: #FFF; text-align: center; color: #ccc; text-decoration: none; display: inline-block; margin: 0 2px; padding: 2px 7px; border: 1px solid #eee; }
+</style>
+
+2 : Set a new function with any name
+
+<?php
+
+public function index ($page=null)
+{
+
+	// Set options for pagination
+	// 'test' = Page name in router.
+	// 'topics' = table name.
+	// '10' = Limit.
+	// '1' = adjacent.
+	// '$page' - The current page current page identifier as in example http://example/test/page/{current page identifier here}.
+	cliprz::library('pagination')->set("test","topics",10,1,$page);
+
+	// Set a query to show results with a set paginatio limit.
+	$query = cliprz::system(database)->select("topics","*","","",cliprz::library('pagination')->limit());
+
+	// Display you results as loop.
+	while ($row = cliprz::system(database)->fetch_assoc($query))
+	{
+		echo $row['subject'].' => '.$row['content'].'<br />';
+	}
+
+	// Display pagination << 1 2 3 4 5 6 >>
+	echo cliprz::library('pagination')->display();
+}
+
+?>
+
+
+3 - But some data in router
+
+<?php
+
+cliprz::system(router)->rule(array(
+    "regex" => "test/page/:INT",
+    "class" => "test",
+    "parameters" => array(2)
+));
+
+cliprz::system(router)->rule(array(
+    "regex" => "test",
+    "class" => "test"
+));
+
+?>

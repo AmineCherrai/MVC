@@ -1,53 +1,16 @@
 ##
- # Copyright :
- #  Cliprz model view controller framework.
- #  Copyright (C) 2012 - 2013 By Yousef Ismaeil.
- #
- # Framework information :
- #  Version 1.0.0 - Incomplete version for real use 7.
- #  Official website http://www.cliprz.org .
- #
- # File information :
- #  File path BASE_PATH/ .
- #  File name .htaccess .
- #  Created date 09/11/2012 05:32 PM.
- #  Last modification date 17/01/2013 12:20 AM.
- #
- # Description :
- #  .htaccess
- #
- # Licenses :
- #  This program is released as free software under the Affero GPL license. You can redistribute it and/or
- #  modify it under the terms of this license which you can read by viewing the included agpl.txt or online
- #  at www.gnu.org/licenses/agpl.html. Removal of this copyright header is strictly prohibited without
- #  written permission from the original author(s).
- ##
-
-##
  # deny .htaccess from directly access.
  ##
 <Files ".htaccess">
-order allow,deny
-deny from all
+    order allow,deny
+    deny from all
 </Files>
 
 ##
  # If you get 'No input file specified'. message or you have problems with FastCGI.
  # Remove (#) from beginning Options +ExecCGI.
  ##
-#Options +ExecCGI
-
-##
- # It is very easy for anyone to view your Apache versions and other installed critical software on your server,
- # and if you don’t upgrade your server software like Apache to the latest versions,
- # and fail to fix security issues which these upgrades fix, then you don’t want anyone online to be aware about your server details.
- # Any simple online tool will show HTTP site headers of any site. So we recommend to Disable ServerSignature.
- ##
-ServerSignature Off
-
-#Options -MultiViews
-
-#Options +FollowSymLinks
+Options +ExecCGI
 
 ##
  # Add Indexes
@@ -66,11 +29,6 @@ RewriteCond %{REQUEST_FILENAME} !-d
  # Installation directory.
  #
 #RewriteBase /
-
-##
- # Allow these directories and files to be displayed directly:
- ##
-#RewriteRule ^(index\.php|robots\.txt|favicon\.ico|public) - [PT,L]
 
 ##
  # If you have any problems with requesting in your website remove (#) from begining of RewriteRule ^(.+)$ index.php/$1 [L]
@@ -92,6 +50,26 @@ RewriteRule .* index.php?/$0 [PT,L,QSA]
 #RewriteRule (.*) https://www.%{HTTP_HOST}%{REQUEST_URI}
 
 ##
- # Cookies and sessions path
+ # If Apache is compiled with built in mod_deflade/GZIP support
+ # then GZIP Javascript, CSS, HTML and XML so they're sent to
+ # the client faster.
  ##
-#php_value session.cookie_domain .YourWebsiteURL.com
+<IfModule mod_deflate.c>
+	AddOutputFilterByType DEFLATE application/javascript text/css text/html text/xml
+</IfModule>
+
+##
+ # mod_gzip is an external extension module for Apache that allows you to quickly and easily compress your files before you send them to the client.
+ # This speeds up your site like crazy!
+ # If your hosting provider has mod_gzip module enabled start GZIP.
+ ##
+<ifModule mod_gzip.c>
+    mod_gzip_on Yes
+    mod_gzip_dechunk Yes
+    mod_gzip_item_include file \.(html?|txt|css|js|php|pl)$
+    mod_gzip_item_include handler ^cgi-script$
+    mod_gzip_item_include mime ^text/.*
+    mod_gzip_item_include mime ^application/x-javascript.*
+    mod_gzip_item_exclude mime ^image/.*
+    mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*
+</ifModule>
